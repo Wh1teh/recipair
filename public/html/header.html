@@ -43,6 +43,34 @@
             <input id="splash-search" name="splash-search" type="text" placeholder="Search..." autofocus>
             <button type="submit"><i class="fa fa-search"></i></button>
         </form>
+
+        <script>
+            function getWords(inputString) {
+                // Split the input string using non-alphabet characters as separators
+                var words = inputString.split(/[^a-zA-Z]+/);
+
+                // Remove duplicates, null, and zero-length items
+                var uniqueWords = words.filter(function (item, index, self) {
+                    return item && index === self.indexOf(item);
+                });
+
+                return uniqueWords;
+            }
+
+            function handleFormSubmit() {
+                // Get the input value from the form
+                var inputString = document.getElementById("inputString").value;
+
+                // Call the getWords function to process the input and get the array of unique words
+                var uniqueWords = getWords(inputString);
+
+                // Output the result
+                console.log(uniqueWords); // You can change this to do whatever you want with the array
+
+                // Prevent form submission
+                return false;
+            }
+        </script>
     </div>
 
     <div class="splash-featured">
@@ -58,15 +86,38 @@
                     porro pariatur adipisci inventore sunt atque velit labore aliquam voluptatem nisi, enim nesciunt
                     nemo!
                     Aliquid, ea numquam!</p>
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Pariatur qui ipsum tenetur aut fuga nostrum
+                    impedit, voluptas cum veritatis itaque ab nihil non nemo quam delectus necessitatibus, beatae
+                    eligendi fugit.</p>
 
                 <a href="">Read more...</a>
             </div>
-            <div class="featured-image">
+            <div class="featured-side">
                 <img src="../img/featured_sample_tonkatsu.jpg" alt="">
+                <div class="featured-stars">
+                    <p class="star-rating">★★★★★</p>
+                    <!-- <p>★</p>
+                    <p>★</p>
+                    <p>★</p>
+                    <p>★</p> -->
+                    <p class="featured-ratings">423 ratings</p>
+
+                    <script>
+                        const MAX_RATING = 5;
+                        var rating = 3.29;
+                        var stars = document.querySelector('.star-rating');
+                        stars.style.backgroundImage = 'linear-gradient(90deg, var(--second-color) '
+                            + rating / MAX_RATING * 100 + '%, var(--first-background-light) 0%)';
+                    </script>
+                </div>
+
+                <div class="featured-submitter">Submitted by SoAndSo57</div>
             </div>
         </div>
 
         <div class="featured-nav">
+            <a href="">•</a>
+            <a href="">•</a>
             <a href="">•</a>
             <a href="">•</a>
             <a href="">•</a>
@@ -80,6 +131,15 @@
             var parallax = document.querySelector('.splash-parallax');
             var scrolled = window.pageYOffset;
             parallax.style.transform = 'translateY(' + (scrolled * 0.8) + 'px)';
+
+            // splash featured fadeout
+            // -webkit-mask-image: linear-gradient(to bottom, black 15%, transparent 45%);
+            // mask-image: linear-gradient(to bottom, black 15%, transparent 45%);
+            var featured = document.querySelector('.splash-featured');
+            let maskImageProperty = 'linear-gradient(to top, black '
+                + (110 - scrolled * 0.4) + '%, transparent ' + (140 - scrolled * 0.4) + '%)';
+            featured.style.webkitMaskImage = maskImageProperty;
+            featured.style.maskImage = maskImageProperty;
         });
     </script>
 </header>
