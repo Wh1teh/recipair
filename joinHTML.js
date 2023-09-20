@@ -21,21 +21,25 @@ function combineHTML(sections) {
     const nav = getNav();
     const footer = getFooter();
 
-    var combinedHTML = `${head}${header}${nav}`;
+    var combined = `${head}${header}${nav}`;
 
-    if (sections != null) {
-        sections.forEach(element => {
-            const section = fs.readFileSync(element, 'utf8');
-            combinedHTML += `${section}`
-        });
+    combined += getSections(sections)
 
-    }
-
-    combinedHTML += `${footer}`;
+    combined += `${footer}`;
 
     //console.log(combinedHTML)
 
-    return combinedHTML;
+    return combined;
+}
+
+function combineHTMLcustom(customGetters) {
+    var combined = ``
+
+    customGetters.forEach(element => {
+        combined += `${element}`
+    });
+
+    return combined;
 }
 
 function getHead() {
@@ -54,12 +58,24 @@ function getFooter() {
     return fs.readFileSync(publicPath + 'footer.html', 'utf8');
 }
 
+function getSections(sections) {
+    var combined = ``
+
+    sections.forEach(element => {
+        combined += `${fs.readFileSync(element, 'utf8')}`
+    });
+
+    return combined
+}
+
 
 
 module.exports = {
     combineHTML: combineHTML,
+    combineHTMLcustom: combineHTMLcustom,
     getHead: getHead,
     getHeader: getHeader,
     getNav: getNav,
-    getFooter: getFooter
+    getFooter: getFooter,
+    getSections: getSections,
 };

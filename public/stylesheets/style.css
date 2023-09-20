@@ -1,5 +1,6 @@
 html {
   --first-color: #fff;
+  --first-color-transparent: #ffffff00;
   --first-color-light: #ccc;
   --second-color: #FF8000;
   --third-color: #FFCF75;
@@ -147,14 +148,16 @@ header {
 }
 
 .search-form input[type="text"] {
-  width: 100%;
+  width: calc(100% - 2em);
   height: 2em;
 
-  padding: 4px;
+  padding: 0 calc(2em + 2px) 0 4px;
 
   border: none;
 
   background-color: var(--first-background-light);
+
+  font-size: 1.3em;
 
   color: #ccc;
   caret-color: #ccc;
@@ -177,8 +180,9 @@ header {
 
 .search-form button[type="submit"] {
   position: absolute;
-  top: 4px;
-  right: -4px;
+  top: 50%;
+  transform: translate(0, -50%);
+  right: -2px;
   width: 2em;
   height: 2em;
   padding: 0;
@@ -245,6 +249,10 @@ header {
   font-size: 1.2em;
 }
 
+.featured-text p {
+  padding: 0 8px;
+}
+
 .featured-text a {
   z-index: 102;
   position: absolute;
@@ -274,20 +282,56 @@ header {
       var(--first-background-light-transparent) 25%);
 }
 
-.featured-image {
+.featured-side {
   width: 50%;
   height: 100%;
 
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-wrap: wrap;
+  /* justify-content: center; */
+  /* align-items: center; */
   overflow: hidden;
 }
 
-.featured-image img {
-  flex-shrink: 0;
-  min-width: 100%;
-  min-height: 100%
+.featured-side img {
+  /* flex-shrink: 0; */
+  top: 0;
+  width: 100%;
+  height: 75%
+}
+
+.featured-stars {
+  width: 100%;
+  height: 12.5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.featured-stars .star-rating {
+  flex: 1;
+  text-align: center;
+
+  font-size: 3vw;
+
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: var(--first-color);
+  color: transparent;
+
+  background-color: var(--first-background-light);
+  /* background-image: linear-gradient(90deg, var(--second-color) 50%, var(--first-background-light) 0%); */
+  background-size: 100%;
+
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+
+.featured-stars .featured-ratings {
+  font-size: 1em;
+  padding-right: 8px;
+  text-align: center;
 }
 
 .featured-nav {
