@@ -111,18 +111,19 @@
                     </script>
                 </div>
 
-                <div class="featured-submitter">Submitted by SoAndSo57</div>
+                <div class="featured-submitter">Submitted by <a href="">SoAndSo57</a></div>
             </div>
         </div>
 
         <div class="featured-nav">
-            <a href="">•</a>
-            <a href="">•</a>
-            <a href="">•</a>
-            <a href="">•</a>
-            <a href="">•</a>
+            <div class="featured-nav-buttons">
+                <a href="">•</a>
+                <a href="">•</a>
+                <a href="">•</a>
+                <a href="">•</a>
+                <a href="">•</a>
+            </div>
         </div>
-
 
     </div>
 
@@ -137,7 +138,7 @@
             // mask-image: linear-gradient(to bottom, black 15%, transparent 45%);
             var featured = document.querySelector('.splash-featured');
             let maskImageProperty = 'linear-gradient(to top, black '
-                + (110 - scrolled * 0.4) + '%, transparent ' + (140 - scrolled * 0.4) + '%)';
+                + (100 - scrolled * 0.3) + '%, transparent ' + (120 - scrolled * 0.3) + '%)';
             featured.style.webkitMaskImage = maskImageProperty;
             featured.style.maskImage = maskImageProperty;
         });
