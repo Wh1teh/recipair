@@ -1,0 +1,85 @@
+<header>
+    <div class="splash-parallax">
+        <div class="splash-background"></div>
+    </div>
+
+    <div class="splash-content">
+        <script>
+            var title = "RECIPAIR";
+            const DUPE_AMOUNT = 8;
+
+            for (let index = 0; index < DUPE_AMOUNT; index++) {
+                document.write('<h1 class="splash-title" data-content="' + title + '" style="z-index: ' + -index
+                    + '; opacity: ' + (0 + ((index + 1) / DUPE_AMOUNT)) + ';">' + title + '</h1>');
+            }
+
+            // //dupe titles scroll
+            // var titles = document.querySelectorAll('.splash-title');
+            // var opacities = {};
+            // for (let index = 0; index < DUPE_AMOUNT; index++) {
+            //     const element = titles[index];
+
+            //     // Get the current opacity of the div
+            //     opacities[index] = parseFloat(element.style.opacity);
+            // }
+
+            // window.addEventListener('scroll', function () {
+            //     var scrolled = window.pageYOffset;
+
+            //     for (let index = 0; index < DUPE_AMOUNT - 1; index++) {
+            //         const element = titles[index];
+            //         element.style.transform = 'translateY(' +
+            //             (scrolled * 0.002 * (DUPE_AMOUNT - 1 - index)) + 'em)';
+
+            //         element.style.opacity = opacities[index] / scrolled * 30;
+
+            //     }
+            // });
+        </script>
+
+        <h2>Find recipes based on items you already have in your cupboards.</h2>
+
+        <form class="search-form">
+            <input id="splash-search" name="splash-search" type="text" placeholder="Search..." autofocus>
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+
+    <div class="splash-featured">
+
+        <div class="featured-title">
+            <h3>Food Title</h3>
+        </div>
+
+        <div class="featured-content">
+            <div class="featured-text">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem quae architecto consectetur
+                    eaque
+                    porro pariatur adipisci inventore sunt atque velit labore aliquam voluptatem nisi, enim nesciunt
+                    nemo!
+                    Aliquid, ea numquam!</p>
+
+                <a href="">Read more...</a>
+            </div>
+            <div class="featured-image">
+                <img src="../img/featured_sample_tonkatsu.jpg" alt="">
+            </div>
+        </div>
+
+        <div class="featured-nav">
+            <a href="">•</a>
+            <a href="">•</a>
+            <a href="">•</a>
+        </div>
+
+
+    </div>
+
+    <script>
+        window.addEventListener('scroll', function () {
+            var parallax = document.querySelector('.splash-parallax');
+            var scrolled = window.pageYOffset;
+            parallax.style.transform = 'translateY(' + (scrolled * 0.8) + 'px)';
+        });
+    </script>
+</header>
