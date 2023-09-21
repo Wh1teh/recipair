@@ -53,17 +53,17 @@
 
         <h2>Find recipes based on items you already have in your cupboards.</h2>
 
-        <form class="search-form">
+        <form id="splash-form" class="search-form">
             <input id="splash-search" name="splash-search" type="text" placeholder="Search...">
             <button type="submit"><i class="fa fa-search"></i></button>
         </form>
 
         <script>
-            var splashForm = document.querySelector("#splash-search");
+            var splashInput = document.querySelector("#splash-search");
             var splashContent = document.querySelector('.splash-content');
             var splashTitles = document.querySelectorAll(".splash-title");
 
-            splashForm.addEventListener("focus", function () {
+            splashInput.addEventListener("focus", function () {
                 for (let index = 0; index < splashTitles.length; index++) {
                     splashTitles[index].style.marginTop = "0";
                 }
@@ -71,7 +71,7 @@
                 splashContent.style.transform = 'translateY(' + (splashTitles.length - 1) * -2 + 'vw)';
             });
 
-            splashForm.addEventListener("blur", function () {
+            splashInput.addEventListener("blur", function () {
                 for (let index = 0; index < splashTitles.length; index++) {
                     splashTitles[index].style.marginTop = ((splashTitles.length - index - 1) * -2) + 'vw';
                 }
@@ -107,6 +107,20 @@
             //     // Prevent form submission
             //     return false;
             // }
+
+            var splashForm = document.querySelector("#splash-form");
+            splashForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                console.log();
+                const formData = new FormData(this);
+                const url = "/recipe/" + new URLSearchParams(formData).toString();
+
+                fetch(url)
+                    .then(response => response.text())
+                    .then(result => console.log(result))
+                    .catch(error => console.error(error));
+            });
         </script>
     </div>
 
