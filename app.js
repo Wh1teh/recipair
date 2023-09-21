@@ -13,6 +13,8 @@ var contactRouter = require('./routes/contact');
 var courseRouter = require('./routes/course');
 var loginRouter = require('./routes/login');
 
+var recipeRouter = require('./routes/recipe');
+
 
 var app = express();
 dotenv.config();
@@ -29,6 +31,8 @@ app.use('/', indexRouter);
 app.use('/contact', contactRouter);
 
 app.use('/login', loginRouter);
+
+app.use('/recipe', recipeRouter);
 
 //app.use(authenticateToken);
 //suojatut endpointit
