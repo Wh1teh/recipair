@@ -4,52 +4,9 @@
     </div>
 
     <div class="splash-content">
-        <script>
-            var title = "RECIPAIR";
-            const DUPE_AMOUNT = 8;
-
-            for (let index = 0; index < DUPE_AMOUNT; index++) {
-                const titleElement = document.createElement('h1');
-
-                // Set content and attributes of the element
-                titleElement.textContent = title;
-                titleElement.setAttribute('class', 'splash-title');
-                titleElement.setAttribute('data-content', title)
-                titleElement.style.zIndex = -index;
-                titleElement.style.opacity = (index + 1) / DUPE_AMOUNT;
-                if (index + 1 != DUPE_AMOUNT) {
-                    //don't apply to last title (this is gonna be the main one)
-                    titleElement.style.marginTop = ((DUPE_AMOUNT - index - 1) * -2) + 'vw';
-                }
-
-                // Write element to document
-                document.write(titleElement.outerHTML);
-            }
-
-
-            // //dupe titles scroll
-            // var titles = document.querySelectorAll('.splash-title');
-            // var opacities = {};
-            // for (let index = 0; index < DUPE_AMOUNT; index++) {
-            //     const element = titles[index];
-
-            //     // Get the current opacity of the div
-            //     opacities[index] = parseFloat(element.style.opacity);
-            // }
-
-            // window.addEventListener('scroll', function () {
-            //     var scrolled = window.pageYOffset;
-
-            //     for (let index = 0; index < DUPE_AMOUNT - 1; index++) {
-            //         const element = titles[index];
-            //         element.style.transform = 'translateY(' +
-            //             (scrolled * 0.002 * (DUPE_AMOUNT - 1 - index)) + 'em)';
-
-            //         element.style.opacity = opacities[index] / scrolled * 30;
-
-            //     }
-            // });
-        </script>
+        <div class="splash-title-container">
+            
+        </div>      
 
         <h2>Find recipes based on items you already have in your cupboards.</h2>
 
@@ -57,116 +14,6 @@
             <input id="splash-search" name="id" type="text" placeholder="Search...">
             <button type="submit"><i class="fa fa-search"></i></button>
         </form>
-
-        <script>
-            var splashInput = document.querySelector("#splash-search");
-            var splashContent = document.querySelector('.splash-content');
-            var splashTitles = document.querySelectorAll(".splash-title");
-
-            splashInput.addEventListener("focus", function () {
-                for (let index = 0; index < splashTitles.length; index++) {
-                    splashTitles[index].style.marginTop = "0";
-                }
-
-                splashContent.style.transform = 'translateY(' + (splashTitles.length - 1) * -2 + 'vw)';
-            });
-
-            splashInput.addEventListener("blur", function () {
-                for (let index = 0; index < splashTitles.length; index++) {
-                    splashTitles[index].style.marginTop = ((splashTitles.length - index - 1) * -2) + 'vw';
-                }
-
-                splashContent.style.transform = 'translateY(' + 0 + 'vh)';
-            });
-
-
-
-
-            // function getWords(inputString) {
-            //     // Split the input string using non-alphabet characters as separators
-            //     var words = inputString.split(/[^a-zA-Z]+/);
-
-            //     // Remove duplicates, null, and zero-length items
-            //     var uniqueWords = words.filter(function (item, index, self) {
-            //         return item && index === self.indexOf(item);
-            //     });
-
-            //     return uniqueWords;
-            // }
-
-            // function handleFormSubmit() {
-            //     // Get the input value from the form
-            //     var inputString = document.getElementById("inputString").value;
-
-            //     // Call the getWords function to process the input and get the array of unique words
-            //     var uniqueWords = getWords(inputString);
-
-            //     // Output the result
-            //     console.log(uniqueWords); // You can change this to do whatever you want with the array
-
-            //     // Prevent form submission
-            //     return false;
-            // }
-
-            var splashForm = document.querySelector("#splash-form");
-            splashForm.addEventListener("submit", function (event) {
-                event.preventDefault();
-
-                const formData = new FormData(this);
-
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        putRecipeData(this.responseText);
-                    }
-                };
-                xhttp.open("GET", this.getAttribute("action") + "?" + new URLSearchParams(formData).toString(), true);
-                xhttp.send();
-            });
-
-            function putRecipeData(serverResponse) {
-                console.log(serverResponse);
-
-                if (!isJson(serverResponse)) {
-                    console.log("not json")
-                    return false;
-                }
-
-                var jsonTable = JSON.parse(serverResponse)
-                if (!Object.keys(jsonTable).length > 0) {
-                    console.log("empty response")
-                    return false;
-                }
-
-                for (let index = 0; index < jsonTable.length; index++) {
-                    const jsonObj = jsonTable[index];
-
-                    console.log(jsonObj.title)
-                    printToFeatured(jsonObj)
-                }
-
-                return true
-            }
-
-            function printToFeatured(jsonObj) {
-                console.log(jsonObj.title)
-
-                document.querySelector(".featured-title h3").innerHTML = jsonObj.title;
-                document.querySelector(".featured-text p").innerHTML = jsonObj.content;
-
-                document.querySelector(".star-rating").setAttribute("data-content", jsonObj.rating); //TODO: create function to update
-                document.querySelector(".featured-submitter a").innerHTML = "PLACEHOLDER"; //TODO
-            }
-
-            function isJson(jsonString) {
-                try {
-                    const json = JSON.parse(jsonString);
-                    return typeof json === 'object' && json !== null;
-                } catch (error) {
-                    return false;
-                }
-            }
-        </script>
     </div>
 
     <div class="splash-featured">
@@ -189,21 +36,7 @@
                 <img src="../img/featured_sample_tonkatsu.jpg" alt="">
                 <div class="featured-stars">
                     <p class="star-rating" data-content="2.5">★★★★★</p>
-                    <!-- <p>★</p>
-                    <p>★</p>
-                    <p>★</p>
-                    <p>★</p> -->
                     <p class="featured-ratings">423 ratings</p>
-
-                    <script>
-                        const MAX_RATING = 5;
-
-                        var stars = document.querySelector('.star-rating');
-                        var rating = parseFloat(stars.getAttribute('data-content'));
-
-                        stars.style.backgroundImage = 'linear-gradient(90deg, var(--second-color) '
-                            + rating / MAX_RATING * 100 + '%, var(--first-background-light) 0%)';
-                    </script>
                 </div>
 
                 <div class="featured-submitter">Submitted by <a href="">SoAndSo57</a></div>
@@ -222,31 +55,5 @@
 
     </div>
 
-    <script>
-        window.addEventListener('scroll', function () {
-            var parallax = document.querySelector('.splash-parallax');
-            var scrolled = window.pageYOffset;
-            parallax.style.transform = 'translateY(' + (scrolled * 0.8) + 'px)';
-
-            // // splash featured fadeout
-            // var featured = document.querySelector('.splash-featured');
-            // let maskImageProperty = 'linear-gradient(to top, black '
-            //     + (100 - scrolled * 0.3) + '%, transparent ' + (120 - scrolled * 0.3) + '%)';
-            // featured.style.webkitMaskImage = maskImageProperty;
-            // featured.style.maskImage = maskImageProperty;
-
-            // // featured slide out
-            // var featured = document.querySelector('.splash-featured');
-            // var scrollPosition = window.scrollY;
-
-            // featured.style.transform = 'translateY(-' + (scrolled * 0.2) + 'px)';
-
-            // if (scrollPosition > 400) {
-            //     featured.style.animationPlayState = 'running';
-            //     featured.style.animationDirection = 'normal';
-            // } else {
-            //     featured.style.animationDirection = 'reverse';
-            // }
-        });
-    </script>
+    <script src="/scripts/header.js" defer></script>
 </header>
