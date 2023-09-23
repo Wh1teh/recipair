@@ -53,38 +53,23 @@ splashInput.addEventListener("blur", function () {
     splashContent.style.transform = 'translateY(' + 0 + 'vh)';
 });
 
-
-// function getWords(inputString) {
-//     // Split the input string using non-alphabet characters as separators
-//     var words = inputString.split(/[^a-zA-Z]+/);
-
-//     // Remove duplicates, null, and zero-length items
-//     var uniqueWords = words.filter(function (item, index, self) {
-//         return item && index === self.indexOf(item);
-//     });
-
-//     return uniqueWords;
-// }
-
-// function handleFormSubmit() {
-//     // Get the input value from the form
-//     var inputString = document.getElementById("inputString").value;
-
-//     // Call the getWords function to process the input and get the array of unique words
-//     var uniqueWords = getWords(inputString);
-
-//     // Output the result
-//     console.log(uniqueWords); // You can change this to do whatever you want with the array
-
-//     // Prevent form submission
-//     return false;
-// }
-
+//handle form input
 var splashForm = document.querySelector("#splash-form");
 splashForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
     const formData = new FormData(this);
+
+    // Filter and separate words in formData
+    const filteredFormData = {};
+    for (let [key, value] of formData.entries()) {
+        const words = value.split(/\W+/); // Split words using non-alphabet characters
+        words.forEach(word => {
+            if (word.length > 0) {
+                filteredFormData[key] = [...new Set(filteredFormData[key] || []), word]; // Ignore duplicates
+            }
+        });
+    }
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -92,7 +77,13 @@ splashForm.addEventListener("submit", function (event) {
             putRecipeData(this.responseText);
         }
     };
-    xhttp.open("GET", this.getAttribute("action") + "?" + new URLSearchParams(formData).toString(), true);
+    
+    // Convert filteredFormData to query string
+    const queryString = Object.entries(filteredFormData)
+        .map(([key, values]) => values.map(value => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join("&"))
+        .join("&");
+
+    xhttp.open("GET", this.getAttribute("action") + "?" + queryString, true);
     xhttp.send();
 });
 
