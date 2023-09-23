@@ -132,17 +132,48 @@ function printToFeatured(jsonObj) {
     document.querySelector(".featured-submitter a").innerHTML = "PLACEHOLDER"; //TODO
 }
 
-function updateRatings() {
+function updateRatings(forceRating) {
     //stars gradient
     const MAX_RATING = 5;
 
     var stars = document.querySelector('.star-rating');
-    var rating = parseFloat(stars.getAttribute('data-content'));
+    var rating = 0;
+    if (forceRating != null) {
+        rating = forceRating;
+    } else {
+        rating = parseFloat(stars.getAttribute('data-content'));
+    }
 
     stars.style.backgroundImage = 'linear-gradient(90deg, var(--second-color) '
         + rating / MAX_RATING * 100 + '%, var(--first-background-light) 0%)';
 }
 
+// Get all the star spans
+const starSpans = document.querySelectorAll('.star-rating span');
+const starContainer = document.querySelector('.star-rating');
+
+starContainer.addEventListener('mouseleave', (event) => {
+    console.log("unhovered");
+
+    updateRatings();
+});
+
+// Add a click event listener to each star span
+for (let index = 0; index < starSpans.length; index++) {
+    starSpans[index].addEventListener('mouseover', (event) => {
+        // Get the clicked star
+        const element = starSpans[index];
+        console.log(element + ', ' + index); // Print the position of star
+
+        updateRatings(index + 1);
+    });
+
+}
+
+
+//helper functions below
+
+//check if parameter is json
 function isJson(jsonString) {
     try {
         const json = JSON.parse(jsonString);
