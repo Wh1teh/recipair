@@ -133,11 +133,11 @@ header {
   /* position: relative; */
   position: absolute;
 
-  margin: 0 0 0 0;
+  margin: 0 0 0 -0.05em;
   /* margin-top: -0.88em; */
   /* margin-top: -7vw; */
 
-  width: 5em;
+  /* width: 5em; */
   font-size: 8vw;
 
   -webkit-text-stroke-width: 1px;
@@ -183,10 +183,10 @@ header {
 }
 
 .search-form input[type="text"] {
-  width: calc(100% - 2em);
+  width: calc(100% - 2em - 4px);
   height: 2em;
 
-  padding: 0 calc(2em + 2px) 0 4px;
+  padding: 0 2em 0 4px;
 
   border: none;
 
@@ -217,7 +217,7 @@ header {
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
-  right: -2px;
+  right: 4px;
   width: 2em;
   height: 2em;
   padding: 0;
@@ -261,6 +261,8 @@ header {
 
   border-radius: 20px 0;
   overflow: hidden;
+
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
 .featured-title {
