@@ -279,6 +279,36 @@ header {
   margin: 0 0 0 0;
 
   font-size: 2em;
+
+  /* animation-name: featured-text-transition-out;
+  animation-duration: 1s;
+  animation-iteration-count: infinite; */
+}
+
+.featured-title h3.animation-in::after,
+.featured-title h3.animation-out::after {
+  content: '';
+  position: absolute;
+  display: block;
+  background-color: var(--first-background);
+
+  width: 100%;
+  height: var(--featured-title-height);
+
+  top: 0;
+  left: 0;
+  transform: skew(225deg) translate(-100%, 0%);
+
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+.featured-title h3.animation-in::after {
+  animation-name: featured-text-transition-out;
+}
+
+.featured-title h3.animation-out::after {
+  animation-name: featured-text-transition-in;
 }
 
 .featured-content {
@@ -465,5 +495,28 @@ header {
 
   to {
     right: -200%;
+  }
+}
+
+
+/* featured transitions */
+
+@keyframes featured-text-transition-out {
+  from {
+    transform: skew(225deg) translate(-100%, 0%);
+  }
+
+  to {
+    transform: skew(225deg) translate(0%, 0%);
+  }
+}
+
+@keyframes featured-text-transition-in {
+  from {
+    transform: skew(225deg) translate(0%, 0%);
+  }
+
+  to {
+    transform: skew(225deg) translate(100%, 0%);
   }
 }

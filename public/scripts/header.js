@@ -9,6 +9,7 @@ window.addEventListener('scroll', function () {
 //splash title generation
 var title = "RECIPAIR";
 const DUPE_AMOUNT = 8;
+const TITLE_OFFSET = -2;
 
 for (let index = 0; index < DUPE_AMOUNT; index++) {
     const titleElement = document.createElement('h1');
@@ -21,7 +22,7 @@ for (let index = 0; index < DUPE_AMOUNT; index++) {
     titleElement.style.opacity = (index + 1) / DUPE_AMOUNT;
     if (index + 1 != DUPE_AMOUNT) {
         //don't apply to last title (this is gonna be the main one)
-        titleElement.style.marginTop = ((DUPE_AMOUNT - index - 1) * -2) + 'vw';
+        titleElement.style.marginTop = ((DUPE_AMOUNT - index - 1) * TITLE_OFFSET) + 'vw';
     }
 
     // Write element to document
@@ -42,12 +43,12 @@ splashInput.addEventListener("focus", function () {
         splashTitles[index].style.marginTop = "0";
     }
 
-    splashContent.style.transform = 'translateY(' + (splashTitles.length - 1) * -2 + 'vw)';
+    splashContent.style.transform = 'translateY(' + (splashTitles.length - 1) * TITLE_OFFSET + 'vw)';
 });
 
 splashInput.addEventListener("blur", function () {
     for (let index = 0; index < splashTitles.length; index++) {
-        splashTitles[index].style.marginTop = ((splashTitles.length - index - 1) * -2) + 'vw';
+        splashTitles[index].style.marginTop = ((splashTitles.length - index - 1) * TITLE_OFFSET) + 'vw';
     }
 
     splashContent.style.transform = 'translateY(' + 0 + 'vh)';
@@ -71,49 +72,84 @@ splashForm.addEventListener("submit", function (event) {
         });
     }
 
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            putRecipeData(this.responseText);
-        }
-    };
-    
-    // Convert filteredFormData to query string
-    const queryString = Object.entries(filteredFormData)
-        .map(([key, values]) => values.map(value => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join("&"))
-        .join("&");
+    // Create a promise
+    const requestPromise = new Promise((resolve, reject) => {
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    resolve(this.responseText); // Resolve promise with response text
+                } else {
+                    reject(new Error('Request failed')); // Reject promise with error
+                }
+            }
+        };
 
-    xhttp.open("GET", this.getAttribute("action") + "?" + queryString, true);
-    xhttp.send();
+        // Convert filteredFormData to query string
+        const queryString = Object.entries(filteredFormData)
+            .map(([key, values]) => values.map(value => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join("&"))
+            .join("&");
+
+        xhttp.open("GET", this.getAttribute("action") + "?" + queryString, true);
+        xhttp.send();
+    });
+
+    Promise.all([requestPromise, startFeaturedTransition()])
+        .then(([responseText/*, otherResult*/]) => {
+            putRecipeData(responseText);
+            //console.log(otherResult); // Access the result of the other promise
+        })
+        .catch(error => {
+            // Handle error
+            console.error(error);
+        });
+
 });
 
 function putRecipeData(serverResponse) {
     console.log(serverResponse);
 
     if (!isJson(serverResponse)) {
-        console.log("not json")
-        return false;
+        console.log("not json");
     }
 
     var jsonTable = JSON.parse(serverResponse)
     if (!Object.keys(jsonTable).length > 0) {
-        console.log("empty response")
-        return false;
+        console.log("empty response");
     }
 
     for (let index = 0; index < jsonTable.length; index++) {
         const jsonObj = jsonTable[index];
 
-        console.log(jsonObj.title)
         printToFeatured(jsonObj)
     }
+}
 
-    return true
+function startFeaturedTransition() {
+    return new Promise((resolve) => {
+        const titleH3 = document.querySelector(".featured-title h3");
+
+        titleH3.classList.add("animation-in");
+        setTimeout(() => {
+            titleH3.style.opacity = 0;
+            titleH3.classList.remove("animation-in");
+
+            resolve();
+        }, 1000);
+    });
+}
+
+function finishFeaturedTransition() {
+    const titleH3 = document.querySelector(".featured-title h3");
+
+    titleH3.classList.add("animation-out");
+    titleH3.style.opacity = 1;
+    setTimeout(() => {
+        titleH3.classList.remove("animation-out");
+    }, 1000);
 }
 
 function printToFeatured(jsonObj) {
-    console.log(jsonObj.title)
-
     document.querySelector(".featured-title h3").innerHTML = jsonObj.title;
     document.querySelector(".featured-text p").innerHTML = jsonObj.content;
 
@@ -121,6 +157,8 @@ function printToFeatured(jsonObj) {
     updateRatings();
 
     document.querySelector(".featured-submitter a").innerHTML = "PLACEHOLDER"; //TODO
+
+    finishFeaturedTransition();
 }
 
 function updateRatings(forceRating) {
