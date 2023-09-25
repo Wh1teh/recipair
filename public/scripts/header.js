@@ -10,6 +10,7 @@ window.addEventListener('scroll', function () {
 var title = "RECIPAIR";
 const DUPE_AMOUNT = 8;
 const TITLE_OFFSET = -2;
+var TITLE_OFFSET_MULTIPLIER = 1.0
 
 for (let index = 0; index < DUPE_AMOUNT; index++) {
     const titleElement = document.createElement('h1');
@@ -43,12 +44,14 @@ splashInput.addEventListener("focus", function () {
         splashTitles[index].style.marginTop = "0";
     }
 
-    splashContent.style.transform = 'translateY(' + (splashTitles.length - 1) * TITLE_OFFSET + 'vw)';
+    splashContent.style.transform = 
+    'translateY(' + (splashTitles.length - 1) * (TITLE_OFFSET * TITLE_OFFSET_MULTIPLIER) + 'vw)';
 });
 
 splashInput.addEventListener("blur", function () {
     for (let index = 0; index < splashTitles.length; index++) {
-        splashTitles[index].style.marginTop = ((splashTitles.length - index - 1) * TITLE_OFFSET) + 'vw';
+        splashTitles[index].style.marginTop = 
+        ((splashTitles.length - index - 1) * (TITLE_OFFSET * TITLE_OFFSET_MULTIPLIER)) + 'vw';
     }
 
     splashContent.style.transform = 'translateY(' + 0 + 'vh)';
@@ -239,3 +242,39 @@ function isJson(jsonString) {
         return false;
     }
 }
+
+
+//mobile stuff below
+
+// Function to change h1 margin-top
+function changeMarginTop(media) {
+    const h1Element = document.querySelector("h1");
+
+    // Check if aspect ratio is below 6/5
+    if (media.matches) {
+        console.log("detected <6/5 aspect ratio");
+        TITLE_OFFSET_MULTIPLIER = 2.5;
+    } else {
+        console.log("detected >6/5 aspect ratio");
+        TITLE_OFFSET_MULTIPLIER = 1.0
+    }
+
+    const titleElements = document.querySelectorAll('.splash-content h1');
+
+    for (let index = 0; index < DUPE_AMOUNT; index++) {
+        if (index + 1 != DUPE_AMOUNT) {
+            //don't apply to last title (this is gonna be the main one)
+            titleElements[index].style.marginTop = 
+            ((DUPE_AMOUNT - index - 1) * (TITLE_OFFSET * TITLE_OFFSET_MULTIPLIER)) + 'vw';
+        }
+    }
+}
+
+// Detect changes in aspect ratio
+const mediaQuery = window.matchMedia("(max-aspect-ratio: 6/5)");
+
+// Initial check
+changeMarginTop(mediaQuery);
+
+// Add event listener for changes in aspect ratio
+mediaQuery.addEventListener("change", changeMarginTop);
