@@ -12,9 +12,9 @@ html {
   --nav-height: 64px;
 }
 
-* {
+/* * {
   transition: 500ms;
-}
+} */
 
 body {
   padding: 0;
