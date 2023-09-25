@@ -332,17 +332,23 @@ header {
 }
 
 .featured-text {
+  pointer-events: none;
+  
   width: 50%;
 
   font-size: 1.2em;
 }
 
 .featured-text p {
+  pointer-events: visible;
+  
   padding: 0 8px;
 }
 
 .featured-text a {
   z-index: 102;
+  pointer-events: visible;
+
   position: absolute;
 
   margin: auto;
