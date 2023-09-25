@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
   const articles = [path + 'index.html'];
   res.end(buildHTML.combineHTMLcustom(
     [buildHTML.getHead(), buildHTML.getNav(), buildHTML.getHeader(),
-    buildHTML.getSections(articles), buildHTML.getFooter()]
+    /*buildHTML.getSections(articles),*/ buildHTML.getFooter()]
   ));
 });
 
