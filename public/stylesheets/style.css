@@ -81,16 +81,16 @@ header {
 
   display: flex;
 
-  height: 100vh;
+  height: 100dvh;
 
-  top: calc(0vh - var(--nav-height));
+  top: calc(0dvh - var(--nav-height));
 }
 
 .splash-parallax {
   position: absolute;
   inset: 0;
   /* overflow: hidden;
-  height: 100vh; */
+  height: 100dvh; */
 }
 
 .splash-background {
@@ -112,7 +112,7 @@ header {
 
   /* margin: 5% 5% 0 5%; */
   margin: auto;
-  /* top: -2vw; */
+  /* top: -2dvw; */
 
   width: 38%;
 
@@ -135,10 +135,10 @@ header {
 
   margin: 0 0 0 -0.05em;
   /* margin-top: -0.88em; */
-  /* margin-top: -7vw; */
+  /* margin-top: -7dvw; */
 
   /* width: 5em; */
-  font-size: 8vw;
+  font-size: 8dvw;
 
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: var(--first-color);
@@ -165,7 +165,7 @@ header {
 }
 
 .splash-content h2 {
-  font-size: 2.3vw;
+  font-size: 2.3dvw;
 
   color: var(--first-color);
 
@@ -250,11 +250,11 @@ header {
 
   /* margin: 12% 2% 0 10%; */
   margin: auto;
-  /* top: 3.5vw; */
+  /* top: 3.5dvw; */
 
   max-width: 40%;
-  height: 50vh;
-  min-height: 25vw;
+  height: 50dvh;
+  min-height: 25dvw;
 
   background-color: var(--first-color);
   color: var(--first-color);
@@ -451,7 +451,7 @@ header {
 
   text-wrap: nowrap;
 
-  font-size: 2.5vw;
+  font-size: 2.5dvw;
 
   -webkit-text-stroke-width: 0.8px;
   -webkit-text-stroke-color: var(--first-color);
@@ -625,28 +625,28 @@ header {
   }
 
   .splash-content h1 {
-      font-size: 17.5vw;
+      font-size: 17.5dvw;
   }
 
   .splash-content h2 {
-    font-size: 4.3vw;
+    font-size: 4.3dvw;
 }
 
   .splash-content {
     width: 85%;
-    margin-top: 35vw;
+    margin-top: 35dvw;
     margin-bottom: 0;
   }
 
   .splash-featured {
     max-width: 85%;
-    margin-top: 4vw;
-    margin-bottom: 1vh;
+    margin-top: 4dvw;
+    margin-bottom: 1dvh;
 
     height: 100%;
   }
 
   .featured-stars .star-rating {
-    font-size: 4.5vw;
+    font-size: 4.5dvw;
   }
 }
