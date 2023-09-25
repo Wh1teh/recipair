@@ -23,7 +23,7 @@ for (let index = 0; index < DUPE_AMOUNT; index++) {
     titleElement.style.opacity = (index + 1) / DUPE_AMOUNT;
     if (index + 1 != DUPE_AMOUNT) {
         //don't apply to last title (this is gonna be the main one)
-        titleElement.style.marginTop = ((DUPE_AMOUNT - index - 1) * TITLE_OFFSET) + 'vw';
+        titleElement.style.marginTop = ((DUPE_AMOUNT - index - 1) * TITLE_OFFSET) + 'dvw';
     }
 
     // Write element to document
@@ -45,16 +45,16 @@ splashInput.addEventListener("focus", function () {
     }
 
     splashContent.style.transform = 
-    'translateY(' + (splashTitles.length - 1) * (TITLE_OFFSET * TITLE_OFFSET_MULTIPLIER) + 'vw)';
+    'translateY(' + (splashTitles.length - 1) * (TITLE_OFFSET * TITLE_OFFSET_MULTIPLIER) + 'dvw)';
 });
 
 splashInput.addEventListener("blur", function () {
     for (let index = 0; index < splashTitles.length; index++) {
         splashTitles[index].style.marginTop = 
-        ((splashTitles.length - index - 1) * (TITLE_OFFSET * TITLE_OFFSET_MULTIPLIER)) + 'vw';
+        ((splashTitles.length - index - 1) * (TITLE_OFFSET * TITLE_OFFSET_MULTIPLIER)) + 'dvw';
     }
 
-    splashContent.style.transform = 'translateY(' + 0 + 'vh)';
+    splashContent.style.transform = 'translateY(' + 0 + 'dvh)';
 });
 
 //handle form input
@@ -265,7 +265,7 @@ function changeMarginTop(media) {
         if (index + 1 != DUPE_AMOUNT) {
             //don't apply to last title (this is gonna be the main one)
             titleElements[index].style.marginTop = 
-            ((DUPE_AMOUNT - index - 1) * (TITLE_OFFSET * TITLE_OFFSET_MULTIPLIER)) + 'vw';
+            ((DUPE_AMOUNT - index - 1) * (TITLE_OFFSET * TITLE_OFFSET_MULTIPLIER)) + 'dvw';
         }
     }
 }
