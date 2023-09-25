@@ -95,9 +95,8 @@ splashForm.addEventListener("submit", function (event) {
     });
 
     Promise.all([requestPromise, startFeaturedTransition()])
-        .then(([responseText/*, otherResult*/]) => {
-            putRecipeData(responseText);
-            //console.log(otherResult); // Access the result of the other promise
+        .then(([responseText, animationTimer]) => {
+            putRecipeData(responseText, animationTimer);
         })
         .catch(error => {
             // Handle error
@@ -106,7 +105,7 @@ splashForm.addEventListener("submit", function (event) {
 
 });
 
-function putRecipeData(serverResponse) {
+function putRecipeData(serverResponse, animationTimer) {
     console.log(serverResponse);
 
     if (!isJson(serverResponse)) {
@@ -121,32 +120,63 @@ function putRecipeData(serverResponse) {
     for (let index = 0; index < jsonTable.length; index++) {
         const jsonObj = jsonTable[index];
 
-        printToFeatured(jsonObj)
+        printToFeatured(jsonObj);
     }
+
+    finishFeaturedTransition(animationTimer);
 }
 
+const TRANSITION_LEN = 1000;
+const FLASH_DELAY = 500;
 function startFeaturedTransition() {
     return new Promise((resolve) => {
         const titleH3 = document.querySelector(".featured-title h3");
-
         titleH3.classList.add("animation-in");
+
+        const sideImgOverlay = document.querySelector(".featured-img .img-overlay");
+        sideImgOverlay.classList.add("animation-in");
+
+        //add flashing animation
+        var animationTimer = Date.now() - FLASH_DELAY;
+
+        setTimeout(() => {
+            document.querySelector(".featured-title").classList.add("waiting");
+            document.querySelector(".featured-content").classList.add("waiting");
+        }, FLASH_DELAY)
+
+        //remove the transition animation after one second
         setTimeout(() => {
             titleH3.style.opacity = 0;
             titleH3.classList.remove("animation-in");
 
-            resolve();
-        }, 1000);
+            document.querySelector(".featured-img img").style.filter = "brightness(0)";
+            sideImgOverlay.classList.remove("animation-in");
+
+            resolve(animationTimer);
+        }, TRANSITION_LEN);
     });
 }
 
-function finishFeaturedTransition() {
-    const titleH3 = document.querySelector(".featured-title h3");
+function finishFeaturedTransition(animationTimer) {
+    //remove flashing animation
+    const currentTime = Date.now();
+    setTimeout(() => {
+        document.querySelector(".featured-title").classList.remove("waiting");
+        document.querySelector(".featured-content").classList.remove("waiting");
+    }, (currentTime - animationTimer) % (TRANSITION_LEN * 2));
 
+    const titleH3 = document.querySelector(".featured-title h3");
     titleH3.classList.add("animation-out");
     titleH3.style.opacity = 1;
+
+    const sideImgOverlay = document.querySelector(".featured-img .img-overlay");
+    document.querySelector(".featured-img img").style.filter = "brightness(1)";
+    sideImgOverlay.classList.add("animation-out");
+
     setTimeout(() => {
         titleH3.classList.remove("animation-out");
-    }, 1000);
+        sideImgOverlay.classList.remove("animation-out");
+    }, TRANSITION_LEN);
 }
 
 function printToFeatured(jsonObj) {
@@ -156,9 +186,7 @@ function printToFeatured(jsonObj) {
     document.querySelector(".star-rating").setAttribute("data-content", jsonObj.rating);
     updateRatings();
 
-    document.querySelector(".featured-submitter a").innerHTML = "PLACEHOLDER"; //TODO
-
-    finishFeaturedTransition();
+    document.querySelector(".featured-submitter a").innerHTML = "PLACEHOLDER"; //TODO  
 }
 
 function updateRatings(forceRating) {
