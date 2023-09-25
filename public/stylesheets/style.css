@@ -256,7 +256,7 @@ header {
   height: 50vh;
   min-height: 25vw;
 
-  background-color: var(--first-background-light);
+  background-color: var(--first-color);
   color: var(--first-color);
 
   border-radius: 20px 0;
@@ -273,6 +273,15 @@ header {
   height: var(--featured-title-height);
 
   background-color: var(--first-background);
+}
+
+.featured-title.waiting,
+.featured-content.waiting {
+  animation-name: featured-waiting;
+  animation-duration: 1s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
 }
 
 .featured-title h3 {
@@ -318,6 +327,8 @@ header {
   overflow: hidden;
 
   height: var(--featured-content-height);
+
+  background-color: var(--first-background-light);
 }
 
 .featured-text {
@@ -370,15 +381,50 @@ header {
   overflow: hidden;
 }
 
-.featured-side img {
-  /* flex-shrink: 0; */
-  top: 0;
-  width: 100%;
+.featured-side .featured-img {
+  display: flex;
   height: 75%;
 
-  object-fit: cover;
-
+  overflow: hidden;
   border-radius: 0 0 0 20px;
+}
+
+.featured-side img {
+  z-index: 100;
+  position: relative;
+  flex-shrink: 0;
+
+  width: 100%;
+
+  object-fit: cover;
+}
+
+.featured-side .img-overlay {
+  z-index: 102;
+  display: block;
+
+  position: relative;
+  flex-shrink: 0;
+
+  width: 300%;
+
+  background-color: black;
+  transform: skew(135deg) translate(-150%, 0%);
+}
+
+.featured-side .img-overlay.animation-in,
+.featured-side .img-overlay.animation-out {
+  display: block;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+.featured-side .img-overlay.animation-in {
+  animation-name: featured-img-transition-in;
+}
+
+.featured-side .img-overlay.animation-out {
+  animation-name: featured-img-transition-out;
 }
 
 .featured-stars {
@@ -518,5 +564,45 @@ header {
 
   to {
     transform: skew(225deg) translate(100%, 0%);
+  }
+}
+
+@keyframes featured-img-transition-in {
+  from {
+    transform: skew(135deg) translate(-150%, 0%);
+  }
+
+  to {
+    transform: skew(135deg) translate(-75%, 0%);
+  }
+}
+
+@keyframes featured-img-transition-out {
+  from {
+    transform: skew(135deg) translate(-75%, 0%);
+  }
+
+  to {
+    transform: skew(135deg) translate(25%, 0%);
+  }
+}
+
+@keyframes featured-waiting {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.8;
+  }
+}
+
+@keyframes animateGradient {
+  0% {
+    background-position: 0%;
+  }
+
+  100% {
+    background-position: 100%;
   }
 }
