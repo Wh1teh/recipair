@@ -579,7 +579,7 @@ header {
 
 @keyframes featured-img-transition-in {
   from {
-    transform: skew(135deg) translate(-150%, 0%);
+    transform: skew(135deg) translate(-175%, 0%);
   }
 
   to {
