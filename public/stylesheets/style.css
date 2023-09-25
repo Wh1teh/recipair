@@ -463,6 +463,7 @@ header {
 }
 
 .star-rating::before {
+  z-index: 110;
   opacity: 0;
 
   content: attr(data-content);
