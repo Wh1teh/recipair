@@ -374,9 +374,10 @@ featuredContainer.addEventListener('touchmove', function (e) {
     }
 });
 
-const SWIPE_TRANSITION = 500;
+
 featuredContainer.addEventListener('touchend', function () {
     isDragging = false;
+    const SWIPE_TRANSITION = 500;
     var swipeLeniency = 8;
 
     var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
@@ -385,13 +386,13 @@ featuredContainer.addEventListener('touchend', function () {
     if (viewportWidth / swipeLeniency > Math.abs(currentX)) {
         currentX = 0;
     } else {
-        swipeToNext(currentX > 0);
+        swipeToNext(currentX > 0, SWIPE_TRANSITION);
     }
 
-    updateFeaturedPosition();
+    updateFeaturedPosition(SWIPE_TRANSITION);
 });
 
-function updateFeaturedPosition() {
+function updateFeaturedPosition(SWIPE_TRANSITION) {
     for (let index = 0; index < 3; index++) {
         featuredBoxes[index].style.transition = SWIPE_TRANSITION + "ms";
         featuredBoxes[index].style.transform = "translateX(" + currentX + "px)";
@@ -402,11 +403,11 @@ function updateFeaturedPosition() {
     }
 }
 
-function swipeToNext(goingToRight) {
+function swipeToNext(goingRight, SWIPE_TRANSITION) {
     var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
     var isMobile = window.matchMedia("(max-aspect-ratio: 6/5)").matches;
 
-    if (goingToRight) {
+    if (goingRight) {
         //do right stuff
         currentX = featuredBoxes[fMID].clientWidth * (isMobile ? 1.333 : 1.25);
     } else {
@@ -416,20 +417,21 @@ function swipeToNext(goingToRight) {
 
     //swap elements after timeout
     setTimeout(() => {
-        if (goingToRight) {
-            //get data from left?right and put data to middle one
-            // featuredBoxes[fMID].innerHTML = featuredBoxes[goingToRight ? fLEFT : fRIGHT].innerHTML;
-            featuredBoxes[fMID].innerHTML = featuredBoxes[fLEFT].innerHTML;
+        //save data from mid
+        var storedOldData = featuredBoxes[fMID].innerHTML;
 
-            //then move all elements back to default position
-            currentX = 0;
+        //get data from left?right and put data to middle one
+        featuredBoxes[fMID].innerHTML = featuredBoxes[goingRight ? fLEFT : fRIGHT].innerHTML;
 
-            //then get and put new data in left?right element
+        //then put old data to right?left
+        featuredBoxes[goingRight ? fRIGHT : fLEFT].innerHTML = storedOldData;
 
-            // updateFeaturedPosition(); //TODO: transition is weird
-        } else {
+        //then move all elements back to default position
+        currentX = 0;
 
-        }
+        //then get and put new data in left?right element
+        //getNewDataOrSomethingIdk() //TODO: swiping will dupe data without this implemented
 
+        updateFeaturedPosition(0); //zero transition time
     }, SWIPE_TRANSITION);
 }
