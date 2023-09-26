@@ -53,7 +53,24 @@ for (let index = 0; index < DUPE_AMOUNT; index++) {
     document.querySelector('.splash-title-container').appendChild(titleElement);
 }
 
+function createDuplicateBoxes(parent, child) {
+    // Clone the original box element
+    var duplicateBox = child.cloneNode(true);
 
+    // Add the "duplicate" class to the new box element
+    duplicateBox.classList.add('duplicate-left');
+
+    // Insert the duplicate box after the original box within the container
+    parent.insertBefore(duplicateBox, child.nextSibling);
+
+    duplicateBox = child.cloneNode(true);
+    duplicateBox.classList.add('duplicate-right');
+    parent.insertBefore(duplicateBox, child.nextSibling);
+}
+
+// clone the container and box elements
+createDuplicateBoxes(
+    document.querySelector('.splash-featured-container'), document.querySelector('.splash-featured'));
 
 
 //
@@ -141,7 +158,7 @@ function putRecipeData(serverResponse, animationTimer) {
     for (let index = 0; index < jsonTable.length; index++) {
         const jsonObj = jsonTable[index];
 
-        printToFeatured(jsonObj);
+        printToFeatured(jsonObj, featuredBoxes[fMID]);
     }
 
     finishFeaturedTransition(animationTimer);
@@ -206,14 +223,18 @@ function finishFeaturedTransition(animationTimer) {
     }, TRANSITION_LEN);
 }
 
-function printToFeatured(jsonObj) {
-    document.querySelector(".featured-title h3").innerHTML = jsonObj.title;
-    document.querySelector(".featured-text p").innerHTML = jsonObj.content;
+function printToFeatured(jsonObj, featuredBox) {
+    featuredBox.querySelector(".featured-title h3").innerHTML = jsonObj.title;
+    featuredBox.querySelector(".featured-text p").innerHTML = jsonObj.content;
 
-    document.querySelector(".star-rating").setAttribute("data-content", jsonObj.rating);
+    featuredBox.querySelector(".star-rating").setAttribute("data-content", jsonObj.rating);
     updateRatings();
 
-    document.querySelector(".featured-submitter a").innerHTML = "PLACEHOLDER"; //TODO  
+    featuredBox.querySelector(".featured-submitter a").innerHTML = "PLACEHOLDER"; //TODO  
+}
+
+function cloneFromFeatured(cloneFrom, cloneTo) {
+    cloneTo.appendChild(cloneFrom.cloneNode(true));
 }
 
 function updateRatings(forceRating) {
@@ -325,38 +346,90 @@ changeTitleMarginTop(aspectQueryList);
 
 
 //swiping for featured
-var box = document.querySelector('.splash-featured-container');
+var featuredContainer = document.querySelector('.splash-featured-container');
+var featuredBoxes = document.querySelectorAll('.splash-featured');
+const fLEFT = 2, fMID = 0, fRIGHT = 1;
+
+console.log(featuredBoxes)
+
 var startX;
 var currentX = 0;
 var isDragging = false;
 
-box.addEventListener('touchstart', function (e) {
+featuredContainer.addEventListener('touchstart', function (e) {
     startX = e.touches[0].clientX;
     isDragging = true;
 });
 
-box.addEventListener('touchmove', function (e) {
+featuredContainer.addEventListener('touchmove', function (e) {
     if (isDragging) {
         var moveX = e.touches[0].clientX - startX;
         currentX += moveX;
         startX = e.touches[0].clientX;
-        box.style.left = currentX + 'px';
+
+        for (let index = 0; index < 3; index++) {
+            featuredBoxes[index].style.transform = "translateX(" + currentX + "px)";
+            featuredContainer.style.transition = "0ms";
+        }
     }
 });
 
-box.addEventListener('touchend', function () {
+const SWIPE_TRANSITION = 500;
+featuredContainer.addEventListener('touchend', function () {
     isDragging = false;
+    var swipeLeniency = 8;
 
     var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
     console.log("Viewport width: " + viewportWidth + ", currentX: " + currentX);
 
-    var swipeLeniency = 4;
     if (viewportWidth / swipeLeniency > Math.abs(currentX)) {
         currentX = 0;
-
     } else {
-        currentX = Math.round(currentX / 100) * 100;
+        swipeToNext(currentX > 0);
     }
 
-    box.style.left = currentX + 'px';
+    updateFeaturedPosition();
 });
+
+function updateFeaturedPosition() {
+    for (let index = 0; index < 3; index++) {
+        featuredBoxes[index].style.transition = SWIPE_TRANSITION + "ms";
+        featuredBoxes[index].style.transform = "translateX(" + currentX + "px)";
+
+        setTimeout(() => {
+            featuredBoxes[index].style.transition = "0ms";
+        }, SWIPE_TRANSITION);
+    }
+}
+
+function swipeToNext(goingToRight) {
+    var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+    var isMobile = window.matchMedia("(max-aspect-ratio: 6/5)").matches;
+
+    if (goingToRight) {
+        //do right stuff
+        currentX = featuredBoxes[fMID].clientWidth * (isMobile ? 1.333 : 1.25);
+    } else {
+        //do left stuff
+        currentX = featuredBoxes[fMID].clientWidth * (isMobile ? 1.333 : 1.25) * -1;
+    }
+
+    //swap elements after timeout
+    setTimeout(() => {
+        if (goingToRight) {
+            //get data from left?right and put data to middle one
+            // featuredBoxes[fMID].innerHTML = featuredBoxes[goingToRight ? fLEFT : fRIGHT].innerHTML;
+            featuredBoxes[fMID].innerHTML = featuredBoxes[fLEFT].innerHTML;
+
+            //then move all elements back to default position
+            currentX = 0;
+
+            //then get and put new data in left?right element
+
+            // updateFeaturedPosition(); //TODO: transition is weird
+        } else {
+
+        }
+
+    }, SWIPE_TRANSITION);
+}

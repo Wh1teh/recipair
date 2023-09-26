@@ -10,6 +10,8 @@ html {
   --first-background-light-transparent: #44444400;
 
   --nav-height: 64px;
+
+  --title-bg-padding: 32px;
 }
 
 /* * {
@@ -114,7 +116,9 @@ header {
 
 .splash-content-container {
   margin: auto;
-  width: 38%;
+  width: calc(40% - var(--title-bg-padding));
+  margin-left: 10%;
+  margin-right: var(--title-bg-padding);
 }
 
 .splash-content {
@@ -136,7 +140,6 @@ header {
   position: absolute;
   content: '';
 
-  --title-bg-padding: 32px;
   padding: var(--title-bg-padding);
 
   --title-bg-height: 200dvh;
@@ -267,13 +270,23 @@ header {
 /* SPLASH FEATURED */
 /*  */
 .splash-featured-container {
+  z-index: 100;
   position: relative;
 
   margin: auto;
 
-  width: 40%;
-  /* height: 50dvh; */
-  /* min-height: 25dvw; */
+  /* width: 40%; */
+  width: 50%;
+
+  transition: 0ms;
+
+  /* -webkit-mask-image: linear-gradient(to right, 
+  transparent 0%, black 5%, black 95%, transparent 100%); */
+
+  overflow: hidden;
+
+  /* swipe animation stuff below */
+  /* perspective: 100dvw; */
 }
 
 .splash-featured {
@@ -284,9 +297,12 @@ header {
   z-index: 1;
   position: relative;
 
-  /* margin: auto; */
+  margin: auto;
 
-  width: 100%;
+  /* width: 100%; */
+  top: 25%;
+  width: 80%;
+
   height: 50dvh;
   min-height: 25dvw;
 
@@ -297,6 +313,20 @@ header {
   overflow: hidden;
 
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.splash-featured.duplicate-left,
+.splash-featured.duplicate-right {
+  position: absolute;
+  top: 0;
+}
+
+.splash-featured.duplicate-left {
+  left: -90%;
+}
+
+.splash-featured.duplicate-right {
+  right: -90%;
 }
 
 .featured-title {
@@ -663,7 +693,7 @@ header {
     align-items: flex-end;
 
     margin: auto;
-    width: 58%;
+    width: 60%;
     height: 40%;
   }
 
@@ -699,7 +729,7 @@ header {
 
     margin: auto;
 
-    width: 58%;
+    width: 100dvw;
     height: 50%;
     /* min-height: 25dvw; */
 
@@ -708,8 +738,19 @@ header {
   }
 
   .splash-featured {
-    width: 100%;
+    margin: auto;
+    top: 0;
+
+    width: 60%;
     height: 100%;
+  }
+
+  .splash-featured.duplicate-left {
+    left: -60%;
+  }
+  
+  .splash-featured.duplicate-right {
+    right: -60%;
   }
 
   .splash-featured .featured-text {
