@@ -8,7 +8,7 @@ window.addEventListener('scroll', function () {
 
 //splash title generation
 var title = "RECIPAIR";
-const DUPE_AMOUNT = 8;
+const DUPE_AMOUNT = 9;
 const TITLE_OFFSET = -2;
 var TITLE_OFFSET_MULTIPLIER = 1.0
 
@@ -22,24 +22,32 @@ for (let index = 0; index < DUPE_AMOUNT; index++) {
     titleElement.style.zIndex = index;
     titleElement.style.opacity = (index + 1) / DUPE_AMOUNT;
 
-    //isn't last element
-    if (index + 1 != DUPE_AMOUNT) {
-        titleElement.style.marginTop = ((DUPE_AMOUNT - index - 1) * TITLE_OFFSET) + 'dvw';
+    //is last element
+    if (index + 1 == DUPE_AMOUNT) {
+        titleElement.style.color = "transparent";
+        titleElement.style.opacity = "1";
+        titleElement.style.textShadow = "none";
     } else {
-        // titleElement.style.color = "transparent";
-        titleElement.style.opacity = "0";
+        titleElement.style.marginTop = ((DUPE_AMOUNT - index - 1) * TITLE_OFFSET) + 'dvw';
+        titleElement.style.webkitTextStrokeColor = "transparent";
     }
 
-    titleElement.style.webkitTextStrokeColor = "transparent";
+    const INTERVAL = 800;
+    const INTERVAL_PHASE = DUPE_AMOUNT; //if this is 2, you're gonna see 2 trails at a time
     setTimeout(() => {
-        titleElement.style.webkitTextStrokeColor = "var(--first-color)";
+        setTimeout(() => {
+            //is last element
+            if (index + 1 == DUPE_AMOUNT) {
+                titleElement.style.color = "var(--first-color)";
+                titleElement.style.opacity = "1";
+            } else {
+                titleElement.style.webkitTextStrokeColor = "var(--first-color)";
+                titleElement.style.color = "transparent";
+            }
+        }, INTERVAL);
 
-        //is last element
-        if (index + 1 == DUPE_AMOUNT) {
-            // titleElement.style.color = "var(--first-color)";
-            titleElement.style.opacity = "1";
-        }
-    }, 200 * (index + 1));
+        titleElement.style.color = "var(--first-color)";
+    }, INTERVAL * (index + 1) / INTERVAL_PHASE);
 
     // Write element to document
     document.querySelector('.splash-title-container').appendChild(titleElement);
@@ -345,7 +353,7 @@ box.addEventListener('touchend', function () {
     var swipeLeniency = 4;
     if (viewportWidth / swipeLeniency > Math.abs(currentX)) {
         currentX = 0;
-        
+
     } else {
         currentX = Math.round(currentX / 100) * 100;
     }
