@@ -717,20 +717,20 @@ header {
 /*  */
 @media (max-aspect-ratio: 2/3) {
   .splash-content {
-    width: 85%;
+    /* width: 85%; */
     margin-top: 35dvw;
   }
 
   .splash-content h1 {
-    font-size: 17.5dvw;
+    /* font-size: 17.5dvw; */
   }
 
   .splash-content h2 {
-    font-size: 4.3dvw;
+    /* font-size: 4.3dvw; */
   }
 
   .splash-featured {
-    width: 85%;
+    /* width: 85%; */
   }
 
   .splash-featured .featured-side {

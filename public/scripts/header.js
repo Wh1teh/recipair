@@ -273,7 +273,7 @@ function changeTitleMarginTop(aspectQueryList) {
     switch (aspectQueryList.findIndex((item) => item.matches === true)) {
         case 0:
             console.log("detected <2/3 aspect ratio");
-            TITLE_OFFSET_MULTIPLIER = 2.5;
+            TITLE_OFFSET_MULTIPLIER = 1.5;
             break;
 
         case 1:
