@@ -314,3 +314,41 @@ for (let i = 0; i < aspectRatios.length; i++) {
 
 // Initial check
 changeTitleMarginTop(aspectQueryList);
+
+
+//swiping for featured
+var box = document.querySelector('.splash-featured-container');
+var startX;
+var currentX = 0;
+var isDragging = false;
+
+box.addEventListener('touchstart', function (e) {
+    startX = e.touches[0].clientX;
+    isDragging = true;
+});
+
+box.addEventListener('touchmove', function (e) {
+    if (isDragging) {
+        var moveX = e.touches[0].clientX - startX;
+        currentX += moveX;
+        startX = e.touches[0].clientX;
+        box.style.left = currentX + 'px';
+    }
+});
+
+box.addEventListener('touchend', function () {
+    isDragging = false;
+
+    var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+    console.log("Viewport width: " + viewportWidth + ", currentX: " + currentX);
+
+    var swipeLeniency = 4;
+    if (viewportWidth / swipeLeniency > Math.abs(currentX)) {
+        currentX = 0;
+        
+    } else {
+        currentX = Math.round(currentX / 100) * 100;
+    }
+
+    box.style.left = currentX + 'px';
+});
