@@ -19,12 +19,27 @@ for (let index = 0; index < DUPE_AMOUNT; index++) {
     titleElement.textContent = title;
     titleElement.setAttribute('class', 'splash-title');
     titleElement.setAttribute('data-content', title)
-    titleElement.style.zIndex = -index;
+    titleElement.style.zIndex = index;
     titleElement.style.opacity = (index + 1) / DUPE_AMOUNT;
+
+    //isn't last element
     if (index + 1 != DUPE_AMOUNT) {
-        //don't apply to last title (this is gonna be the main one)
         titleElement.style.marginTop = ((DUPE_AMOUNT - index - 1) * TITLE_OFFSET) + 'dvw';
+    } else {
+        // titleElement.style.color = "transparent";
+        titleElement.style.opacity = "0";
     }
+
+    titleElement.style.webkitTextStrokeColor = "transparent";
+    setTimeout(() => {
+        titleElement.style.webkitTextStrokeColor = "var(--first-color)";
+
+        //is last element
+        if (index + 1 == DUPE_AMOUNT) {
+            // titleElement.style.color = "var(--first-color)";
+            titleElement.style.opacity = "1";
+        }
+    }, 200 * (index + 1));
 
     // Write element to document
     document.querySelector('.splash-title-container').appendChild(titleElement);
@@ -64,37 +79,33 @@ splashForm.addEventListener("submit", function (event) {
 
     const formData = new FormData(this);
 
-    // Filter and separate words in formData
+    // Filter and separate words in formData 
     const filteredFormData = {};
     for (let [key, value] of formData.entries()) {
-        const words = value.split(/\W+/); // Split words using non-alphabet characters
+        const words = value.split(/\W+/); // Split words using non-alphabet characters 
         words.forEach(word => {
             if (word.length > 0) {
-                filteredFormData[key] = [...new Set(filteredFormData[key] || []), word]; // Ignore duplicates
+                filteredFormData[key] = [...new Set(filteredFormData[key] || []), word]; // Ignore duplicates 
             }
         });
     }
 
-    // Create a promise
+    // Create a promise 
     const requestPromise = new Promise((resolve, reject) => {
-        const xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4) {
-                if (this.status == 200) {
-                    resolve(this.responseText); // Resolve promise with response text
-                } else {
-                    reject(new Error('Request failed')); // Reject promise with error
-                }
-            }
-        };
-
         // Convert filteredFormData to query string
         const queryString = Object.entries(filteredFormData)
-            .map(([key, values]) => values.map(value => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join("&"))
-            .join("&");
+            .map(([key, values]) => values.map(value => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+                .join("&")).join("&");
 
-        xhttp.open("GET", this.getAttribute("action") + "?" + queryString, true);
-        xhttp.send();
+        fetch(this.getAttribute("action") + "?" + queryString).then(response => {
+            if (response.ok) {
+                resolve(response.text()); // Resolve promise with response text 
+            } else {
+                reject(new Error('Request failed')); // Reject promise with error 
+            }
+        }).catch(error => {
+            reject(error); // Reject promise with error 
+        });
     });
 
     Promise.all([requestPromise, startFeaturedTransition()])
@@ -102,10 +113,9 @@ splashForm.addEventListener("submit", function (event) {
             putRecipeData(responseText, animationTimer);
         })
         .catch(error => {
-            // Handle error
+            // Handle error 
             console.error(error);
         });
-
 });
 
 function putRecipeData(serverResponse, animationTimer) {
@@ -253,9 +263,9 @@ function isJson(jsonString) {
 //mobile stuff below
 
 // ignore keyboard
-if('virtualKeyboard' in navigator) {
+if ('virtualKeyboard' in navigator) {
     navigator.virtualKeyboard.overlaysContent = true;
-  }
+}
 
 // Function to change h1 margin-top
 function changeTitleMarginTop(aspectQueryList) {
