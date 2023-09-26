@@ -112,19 +112,20 @@ header {
   z-index: -100;
 }
 
+.splash-content-container {
+  margin: auto;
+  width: 38%;
+}
+
 .splash-content {
   position: relative;
   z-index: 1;
 
-  /* margin: 5% 5% 0 5%; */
-  margin: auto;
-  /* top: -2dvw; */
+  /* margin: auto; */
 
-  width: 38%;
+  width: 100%;
 
   color: var(--first-color);
-
-  /* background-color: rgb(0 0 0 / 50%); */
 
   display: flex;
   flex-direction: column;
@@ -265,6 +266,16 @@ header {
 /*  */
 /* SPLASH FEATURED */
 /*  */
+.splash-featured-container {
+  position: relative;
+
+  margin: auto;
+
+  width: 40%;
+  /* height: 50dvh; */
+  /* min-height: 25dvw; */
+}
+
 .splash-featured {
   --featured-nav-height: 20px;
   --featured-title-height: calc(4.5rem - var(--featured-nav-height));
@@ -273,11 +284,9 @@ header {
   z-index: 1;
   position: relative;
 
-  /* margin: 12% 2% 0 10%; */
-  margin: auto;
-  /* top: 3.5dvw; */
+  /* margin: auto; */
 
-  width: 40%;
+  width: 100%;
   height: 50dvh;
   min-height: 25dvw;
 
@@ -649,6 +658,21 @@ header {
     flex-direction: column;
   }
 
+  .splash-content-container {
+    display: flex;
+    align-items: flex-end;
+
+    margin: auto;
+    width: 58%;
+    height: 40%;
+  }
+
+  .splash-content {
+    /* width: 58%; */
+    margin-top: 11dvw;
+    margin-bottom: 0;
+  }
+
   .splash-content h1 {
     text-align: center;
     font-size: 12.5dvw;
@@ -670,17 +694,21 @@ header {
     margin-top: 14dvw;
   }
 
-  .splash-content {
+  .splash-featured-container {
+    position: relative;
+
+    margin: auto;
+
     width: 58%;
-    margin-top: 21dvw;
-    margin-bottom: 0;
+    height: 50%;
+    /* min-height: 25dvw; */
+
+    margin-top: 4dvw;
+    margin-bottom: 1dvh;
   }
 
   .splash-featured {
-    width: 58%;
-    margin-top: 4dvw;
-    margin-bottom: 1dvh;
-
+    width: 100%;
     height: 100%;
   }
 
@@ -729,6 +757,9 @@ header {
 /* ASPECTRATIO ASPECT RATIO 2:3 */
 /*  */
 @media (max-aspect-ratio: 2/3) {
+  .splash-content-container {
+    /* height: 30%; */
+  }
   .splash-featured .featured-side {
     background: linear-gradient(to bottom, var(--first-background) 20px, transparent 20px);
   }
@@ -755,7 +786,7 @@ header {
   }
 
   .featured-stars .star-rating {
-    font-size: calc(0.8em + 5dvw);
+    font-size: 6dvw;
   }
 
   .featured-side .featured-ratings {
