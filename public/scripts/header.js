@@ -140,7 +140,7 @@ function startFeaturedTransition() {
         sideImgOverlay.classList.add("animation-in");
 
         //add flashing animation
-        var animationTimer = Date.now() - FLASH_DELAY;
+        var animationTimer = Date.now() + FLASH_DELAY;
 
         setTimeout(() => {
             document.querySelector(".featured-title").classList.add("waiting");
@@ -163,10 +163,16 @@ function startFeaturedTransition() {
 function finishFeaturedTransition(animationTimer) {
     //remove flashing animation
     const currentTime = Date.now();
+    console.log("animation start: " + animationTimer);
+    console.log("animation end: " + currentTime);
+    console.log("duration: " + (animationTimer - currentTime));
+    console.log("mod 2000: " + (currentTime - animationTimer) % (TRANSITION_LEN * 2));
+    console.log("remaining: " + ((TRANSITION_LEN * 2) - ((currentTime - animationTimer) % (TRANSITION_LEN * 2))));
+
     setTimeout(() => {
         document.querySelector(".featured-title").classList.remove("waiting");
         document.querySelector(".featured-content").classList.remove("waiting");
-    }, (currentTime - animationTimer) % (TRANSITION_LEN * 2));
+    }, (TRANSITION_LEN * 2) - ((currentTime - animationTimer) % (TRANSITION_LEN * 2)));
 
     const titleH3 = document.querySelector(".featured-title h3");
     titleH3.classList.add("animation-out");
