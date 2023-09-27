@@ -178,7 +178,7 @@ function putRecipeData(serverResponse, animationTimer) {
         throw new Error("Empty response");
     }
 
-    console.log("received: ", jsonTable);
+    // console.log("received: ", jsonTable);
 
     // clear list
     recipeList = [];
@@ -196,8 +196,17 @@ function putRecipeData(serverResponse, animationTimer) {
         printToFeatured(recipeList[RECIPE_INDEX], featuredBoxes[fMID]);
         printToFeatured(recipeList[RECIPE_INDEX - 1], featuredBoxes[fLEFT]);
         printToFeatured(recipeList[RECIPE_INDEX + 1], featuredBoxes[fRIGHT]);
+    } else {
+        RECIPE_INDEX = 0;
+
+        printToFeatured(recipeList[0], featuredBoxes[fMID]);
+        if (recipeList.length == 2) {
+            printToFeatured(recipeList[1], featuredBoxes[fRIGHT]);
+        }
     }
-    console.log("reversed half: ", recipeList);
+
+
+    console.log("final received list: ", recipeList);
 
     finishFeaturedTransition(animationTimer);
 }
@@ -266,6 +275,8 @@ function printToFeatured(jsonObj, featuredBox) {
     featuredBox.querySelector(".featured-title h3").innerHTML = jsonObj.title;
     featuredBox.querySelector(".featured-text p").innerHTML = jsonObj.content;
 
+    putImagetoElement(featuredBox);
+
     featuredBox.querySelector(".star-rating").setAttribute("data-content", jsonObj.rating);
     updateRatings(featuredBox);
 
@@ -285,6 +296,20 @@ function updateRatings(featuredBox) {
 
     stars.style.backgroundImage = 'linear-gradient(90deg, var(--second-color) '
         + rating / MAX_RATING * 100 + '%, var(--first-background-light) 0%)';
+}
+
+function putImagetoElement(featuredBox) {
+    const title = featuredBox.querySelector(".featured-title h3").innerHTML
+
+    //TODO? maybe these shouldn't be this hardcoded idk
+    const path = "../img/";
+    const prefix = "featured_sample_";
+
+    // parse/title_into_this_form.jpg
+    const imgPath = path + prefix + title.split(" ").join("_").toLowerCase() + ".jpg";
+
+    const imgElement = featuredBox.querySelector(".featured-img img")
+    imgElement.setAttribute("src", imgPath);
 }
 
 // Get all the star spans
