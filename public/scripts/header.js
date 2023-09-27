@@ -143,6 +143,31 @@ splashForm.addEventListener("submit", function (event) {
         });
 });
 
+//
+document.addEventListener('DOMContentLoaded', function () {
+    // Create a promise 
+    const requestPromise = new Promise((resolve, reject) => {
+        fetch(splashForm.getAttribute("action")).then(response => {
+            if (response.ok) {
+                resolve(response.text()); // Resolve promise with response text 
+            } else {
+                reject(new Error('Request failed')); // Reject promise with error 
+            }
+        }).catch(error => {
+            reject(error); // Reject promise with error 
+        });
+    });
+
+    Promise.all([requestPromise, startFeaturedTransition(0)])
+        .then(([responseText, animationTimer]) => {
+            putRecipeData(responseText, animationTimer);
+        })
+        .catch(error => {
+            // Handle error 
+            console.error(error);
+        });
+});
+
 var recipeList = [];
 var RECIPE_INDEX = 0;
 function putRecipeData(serverResponse, animationTimer) {
@@ -179,7 +204,7 @@ function putRecipeData(serverResponse, animationTimer) {
 
 const TRANSITION_LEN = 1000;
 const FLASH_DELAY = 500;
-function startFeaturedTransition() {
+function startFeaturedTransition(timerMultiplier = 1) {
     return new Promise((resolve) => {
         const titleH3 = document.querySelector(".featured-title h3");
         titleH3.classList.add("animation-in");
@@ -188,12 +213,12 @@ function startFeaturedTransition() {
         sideImgOverlay.classList.add("animation-in");
 
         //add flashing animation
-        var animationTimer = Date.now() + FLASH_DELAY;
+        var animationTimer = Date.now() + FLASH_DELAY * timerMultiplier;
 
         setTimeout(() => {
             document.querySelector(".featured-title").classList.add("waiting");
             document.querySelector(".featured-content").classList.add("waiting");
-        }, FLASH_DELAY)
+        }, FLASH_DELAY * timerMultiplier)
 
         //remove the transition animation after one second
         setTimeout(() => {
@@ -204,7 +229,7 @@ function startFeaturedTransition() {
             sideImgOverlay.classList.remove("animation-in");
 
             resolve(animationTimer);
-        }, TRANSITION_LEN);
+        }, TRANSITION_LEN * timerMultiplier);
     });
 }
 
