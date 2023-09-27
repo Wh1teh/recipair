@@ -409,19 +409,19 @@ featuredContainer.addEventListener('touchmove', function (e) {
         currentX += moveX;
         startX = e.touches[0].clientX;
 
-        if (atEdge()) {
-            //see which way can go
-            if (currentX >= 0 ? RECIPE_INDEX <= 0 : RECIPE_INDEX + 1 >= recipeList.length) {
-                var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+        // if (atEdge()) {
+        //     //see which way can go
+        //     if (currentX >= 0 ? RECIPE_INDEX <= 0 : RECIPE_INDEX + 1 >= recipeList.length) {
+        //         var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
-                //movement is restricted
-                if (viewportWidth / SWIPE_LENIENCY < Math.abs(currentX)) {
-                    let mult = currentX < 0 ? -1 : 1;
-                    currentX = viewportWidth / SWIPE_LENIENCY * mult;
-                    return;
-                }
-            }
-        }
+        //         //movement is restricted
+        //         if (viewportWidth / SWIPE_LENIENCY < Math.abs(currentX)) {
+        //             let mult = currentX < 0 ? -1 : 1;
+        //             currentX = viewportWidth / SWIPE_LENIENCY * mult;
+        //             return;
+        //         }
+        //     }
+        // }
 
         for (let index = 0; index < 3; index++) {
             featuredBoxes[index].style.transform = "translateX(" + currentX + "px)";
