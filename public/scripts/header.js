@@ -262,6 +262,7 @@ function finishFeaturedTransition(animationTimer) {
 }
 
 function printToFeatured(jsonObj, featuredBox) {
+    // console.log("obj: ", jsonObj, "box: ", featuredBox)
     featuredBox.querySelector(".featured-title h3").innerHTML = jsonObj.title;
     featuredBox.querySelector(".featured-text p").innerHTML = jsonObj.content;
 
@@ -394,6 +395,9 @@ var startX;
 var currentX = 0;
 var isDragging = false;
 
+var SWIPE_LENIENCY = 8;
+const SWIPE_TRANSITION = 500;
+
 featuredContainer.addEventListener('touchstart', function (e) {
     startX = e.touches[0].clientX;
     isDragging = true;
@@ -405,6 +409,20 @@ featuredContainer.addEventListener('touchmove', function (e) {
         currentX += moveX;
         startX = e.touches[0].clientX;
 
+        if (atEdge()) {
+            //see which way can go
+            if (currentX >= 0 ? RECIPE_INDEX <= 0 : RECIPE_INDEX + 1 >= recipeList.length) {
+                var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+
+                //movement is restricted
+                if (viewportWidth / SWIPE_LENIENCY < Math.abs(currentX)) {
+                    let mult = currentX < 0 ? -1 : 1;
+                    currentX = viewportWidth / SWIPE_LENIENCY * mult;
+                    return;
+                }
+            }
+        }
+
         for (let index = 0; index < 3; index++) {
             featuredBoxes[index].style.transform = "translateX(" + currentX + "px)";
             featuredContainer.style.transition = "0ms";
@@ -415,13 +433,11 @@ featuredContainer.addEventListener('touchmove', function (e) {
 
 featuredContainer.addEventListener('touchend', function () {
     isDragging = false;
-    const SWIPE_TRANSITION = 500;
-    var swipeLeniency = 8;
 
     var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
     console.log("Viewport width: " + viewportWidth + ", currentX: " + currentX);
 
-    if (viewportWidth / swipeLeniency > Math.abs(currentX)) {
+    if (viewportWidth / SWIPE_LENIENCY > Math.abs(currentX)) {
         currentX = 0;
     } else {
         swipeToNext(currentX > 0, SWIPE_TRANSITION);
@@ -441,7 +457,29 @@ function updateFeaturedPosition(SWIPE_TRANSITION) {
     }
 }
 
+//check if slider index is at one of the edges
+function atEdge() {
+    // console.log(0, " < ", RECIPE_INDEX , " < ", recipeList.length - 1)
+    if (0 < RECIPE_INDEX && RECIPE_INDEX < recipeList.length - 1) {
+        // console.log(false);
+        return false;
+    } else {
+        // console.log(true);
+        return true;
+    }
+}
+
 function swipeToNext(goingRight, SWIPE_TRANSITION) {
+    if (atEdge()) {
+        if (goingRight ? RECIPE_INDEX <= 0 : RECIPE_INDEX + 1 >= recipeList.length) {
+            console.log("ALREADY AT THE EDGE");
+
+            //move all elements back to default position
+            currentX = 0;
+            return;
+        }
+    }
+
     var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
     var isMobile = window.matchMedia("(max-aspect-ratio: 6/5)").matches;
 
@@ -453,27 +491,37 @@ function swipeToNext(goingRight, SWIPE_TRANSITION) {
         currentX = featuredBoxes[fMID].clientWidth * (isMobile ? 1.333 : 1.25) * -1;
     }
 
+    const oldSide = goingRight ? fRIGHT : fLEFT;
+    const newSide = goingRight ? fLEFT : fRIGHT;
+
     //swap elements after timeout
     setTimeout(() => {
         //move index
-        if (nudgeListIndex(goingRight)) {
-            //can't move further
-        }
+        nudgeListIndex(goingRight);
 
         //put new mid's data to mid box (which is now to the side)
         printToFeatured(recipeList[RECIPE_INDEX], featuredBoxes[fMID]);
 
         //put old mid's data to right?left
-        printToFeatured(recipeList[RECIPE_INDEX + (goingRight ? 1 : -1)], featuredBoxes[goingRight ? fRIGHT : fLEFT]);
+        printToFeatured(recipeList[RECIPE_INDEX + (goingRight ? 1 : -1)], featuredBoxes[oldSide]);
 
-        //put new data to left?right
-        printToFeatured(recipeList[RECIPE_INDEX + (goingRight ? -1 : 1)], featuredBoxes[goingRight ? fLEFT : fRIGHT]);
+        if (!atEdge()) {
+            //put new data to left?right
+            printToFeatured(recipeList[RECIPE_INDEX + (goingRight ? -1 : 1)], featuredBoxes[newSide]);
+        }
 
-        //then move all elements back to default position
+        //move all elements back to default position
         currentX = 0;
 
         //update visual
         updateFeaturedPosition(0); //zero transition time
+
+        //make element beyond edge invisible
+        if (atEdge()) {
+            featuredBoxes[newSide].style.opacity = "0";
+        } else {
+            featuredBoxes[newSide].style.opacity = "1";
+        }
     }, SWIPE_TRANSITION);
 }
 
@@ -481,14 +529,10 @@ function nudgeListIndex(goingRight) {
     console.log("current index: ", RECIPE_INDEX)
 
     //can go further
-    if (goingRight ? RECIPE_INDEX + 1 < recipeList.length : RECIPE_INDEX > 0) {
+    if (!atEdge()) {
         goingRight ? RECIPE_INDEX-- : RECIPE_INDEX++;
         console.log("moved to: ", RECIPE_INDEX);
-
-        return true;
     } else {
         console.log("can't move further");
-
-        return false;
     }
 }
