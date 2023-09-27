@@ -605,6 +605,33 @@ header {
   /* text-shadow: 0 0 4px rgba(0 0 0 / 90%); */
 }
 
+.featured-nav a.featured-current-nav-position {
+  color: var(--first-color);
+
+  animation-name: nav-button-glow;
+  animation-duration: 500ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+}
+
+.featured-nav a.featured-nav-phasing-out {
+  animation-name: nav-button-glow;
+  animation-duration: 500ms;
+  animation-fill-mode: backwards;
+  animation-direction: reverse;
+  animation-timing-function: ease-in;
+}
+
+@keyframes nav-button-glow {
+  from {
+    text-shadow: 0 0 0px var(--first-color), 0 0 0px var(--first-color), 0 0 0px var(--first-color);
+  }
+
+  to {
+    text-shadow: 0 0 6px var(--first-color), 0 0 6px var(--first-color), 0 0 6px var(--first-color);
+  }
+}
+
 /*  */
 /* ANIMATIONS */
 /*  */
@@ -750,7 +777,7 @@ header {
   .splash-featured.duplicate-left {
     left: -60%;
   }
-  
+
   .splash-featured.duplicate-right {
     right: -60%;
   }
@@ -803,6 +830,7 @@ header {
   .splash-content-container {
     /* height: 30%; */
   }
+
   .splash-featured .featured-side {
     background: linear-gradient(to bottom, var(--first-background) 20px, transparent 20px);
   }
