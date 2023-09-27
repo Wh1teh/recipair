@@ -186,7 +186,6 @@ function putRecipeData(serverResponse, animationTimer) {
         recipeList.push(jsonTable[index]);
     }
 
-    //TODO: what to do when there are only less than 3
     if (recipeList.length >= 3) {
         RECIPE_INDEX = Math.floor(jsonTable.length / 2);
         let firstHalf = jsonTable.slice(0, RECIPE_INDEX);
@@ -196,12 +195,20 @@ function putRecipeData(serverResponse, animationTimer) {
         printToFeatured(recipeList[RECIPE_INDEX], featuredBoxes[fMID]);
         printToFeatured(recipeList[RECIPE_INDEX - 1], featuredBoxes[fLEFT]);
         printToFeatured(recipeList[RECIPE_INDEX + 1], featuredBoxes[fRIGHT]);
+
+        featuredBoxes.forEach(element => {
+            element.style.opacity = "1";
+        });
     } else {
         RECIPE_INDEX = 0;
 
         printToFeatured(recipeList[0], featuredBoxes[fMID]);
+        featuredBoxes[fRIGHT].style.opacity = "0";
+        featuredBoxes[fLEFT].style.opacity = "0";
+
         if (recipeList.length == 2) {
             printToFeatured(recipeList[1], featuredBoxes[fRIGHT]);
+            featuredBoxes[fRIGHT].style.opacity = "1";
         }
     }
 
