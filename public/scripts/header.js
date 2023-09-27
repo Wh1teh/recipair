@@ -143,23 +143,36 @@ splashForm.addEventListener("submit", function (event) {
         });
 });
 
+var recipeList = [];
+var RECIPE_INDEX = 0;
 function putRecipeData(serverResponse, animationTimer) {
-    console.log(serverResponse);
-
-    if (!isJson(serverResponse)) {
-        console.log("not json");
-    }
+    // console.log(serverResponse);
 
     var jsonTable = JSON.parse(serverResponse)
     if (!Object.keys(jsonTable).length > 0) {
-        console.log("empty response");
+        throw new Error("Empty response");
     }
 
+    console.log("received: ", jsonTable);
+
+    // clear list
+    recipeList = [];
     for (let index = 0; index < jsonTable.length; index++) {
-        const jsonObj = jsonTable[index];
-
-        printToFeatured(jsonObj, featuredBoxes[fMID]);
+        recipeList.push(jsonTable[index]);
     }
+
+    //TODO: what to do when there are only less than 3
+    if (recipeList.length >= 3) {
+        RECIPE_INDEX = Math.floor(jsonTable.length / 2);
+        let firstHalf = jsonTable.slice(0, RECIPE_INDEX);
+
+        recipeList.splice(0, Math.ceil(jsonTable.length / 2), ...firstHalf.reverse());
+
+        printToFeatured(recipeList[RECIPE_INDEX], featuredBoxes[fMID]);
+        printToFeatured(recipeList[RECIPE_INDEX - 1], featuredBoxes[fLEFT]);
+        printToFeatured(recipeList[RECIPE_INDEX + 1], featuredBoxes[fRIGHT]);
+    }
+    console.log("reversed half: ", recipeList);
 
     finishFeaturedTransition(animationTimer);
 }
@@ -417,21 +430,40 @@ function swipeToNext(goingRight, SWIPE_TRANSITION) {
 
     //swap elements after timeout
     setTimeout(() => {
-        //save data from mid
-        var storedOldData = featuredBoxes[fMID].innerHTML;
+        //move index
+        if (nudgeListIndex(goingRight)) {
+            //can't move further
+        }
 
-        //get data from left?right and put data to middle one
-        featuredBoxes[fMID].innerHTML = featuredBoxes[goingRight ? fLEFT : fRIGHT].innerHTML;
+        //put new mid's data to mid box (which is now to the side)
+        printToFeatured(recipeList[RECIPE_INDEX], featuredBoxes[fMID]);
 
-        //then put old data to right?left
-        featuredBoxes[goingRight ? fRIGHT : fLEFT].innerHTML = storedOldData;
+        //put old mid's data to right?left
+        printToFeatured(recipeList[RECIPE_INDEX + (goingRight ? 1 : -1)], featuredBoxes[goingRight ? fRIGHT : fLEFT]);
+
+        //put new data to left?right
+        printToFeatured(recipeList[RECIPE_INDEX + (goingRight ? -1 : 1)], featuredBoxes[goingRight ? fLEFT : fRIGHT]);
 
         //then move all elements back to default position
         currentX = 0;
 
-        //then get and put new data in left?right element
-        //getNewDataOrSomethingIdk() //TODO: swiping will dupe data without this implemented
-
+        //update visual
         updateFeaturedPosition(0); //zero transition time
     }, SWIPE_TRANSITION);
+}
+
+function nudgeListIndex(goingRight) {
+    console.log("current index: ", RECIPE_INDEX)
+
+    //can go further
+    if (goingRight ? RECIPE_INDEX + 1 < recipeList.length : RECIPE_INDEX > 0) {
+        goingRight ? RECIPE_INDEX-- : RECIPE_INDEX++;
+        console.log("moved to: ", RECIPE_INDEX);
+
+        return true;
+    } else {
+        console.log("can't move further");
+
+        return false;
+    }
 }
