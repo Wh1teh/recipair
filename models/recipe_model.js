@@ -16,7 +16,7 @@ const recipe = {
     //select all recipes that contain the keywords
     const query = 'SELECT DISTINCT r.* FROM recipe r ' +
       'INNER JOIN recipe_ingredient ri ON r.id = ri.recipe_id ' +
-      'WHERE ri.name REGEXP "(?)"';
+      'WHERE ri.name REGEXP ?';
 
     console.log(query + ", " + params);
 
