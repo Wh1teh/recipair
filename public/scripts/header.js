@@ -267,7 +267,7 @@ function printToFeatured(jsonObj, featuredBox) {
     featuredBox.querySelector(".featured-text p").innerHTML = jsonObj.content;
 
     featuredBox.querySelector(".star-rating").setAttribute("data-content", jsonObj.rating);
-    updateRatings();
+    updateRatings(featuredBox);
 
     featuredBox.querySelector(".featured-submitter a").innerHTML = "PLACEHOLDER"; //TODO  
 }
@@ -276,17 +276,12 @@ function cloneFromFeatured(cloneFrom, cloneTo) {
     cloneTo.appendChild(cloneFrom.cloneNode(true));
 }
 
-function updateRatings(forceRating) {
+function updateRatings(featuredBox) {
     //stars gradient
     const MAX_RATING = 5;
 
-    var stars = document.querySelector('.star-rating');
-    var rating = 0;
-    if (forceRating != null) {
-        rating = forceRating;
-    } else {
-        rating = parseFloat(stars.getAttribute('data-content'));
-    }
+    var stars = featuredBox.querySelector('.star-rating');
+    var rating = parseFloat(stars.getAttribute('data-content'));
 
     stars.style.backgroundImage = 'linear-gradient(90deg, var(--second-color) '
         + rating / MAX_RATING * 100 + '%, var(--first-background-light) 0%)';
@@ -516,9 +511,6 @@ function swipeToNext(goingRight, SWIPE_TRANSITION) {
         //move all elements back to default position
         currentX = 0;
 
-        //update visual
-        updateFeaturedPosition(0); //zero transition time
-
         //make element beyond edge invisible
         if (atEdge()) {
             featuredBoxes[newSide].style.opacity = "0";
@@ -526,6 +518,9 @@ function swipeToNext(goingRight, SWIPE_TRANSITION) {
         } else {
             featuredBoxes[oldSide].style.opacity = "1";
         }
+
+        //update visual
+        updateFeaturedPosition(0); //zero transition time
     }, SWIPE_TRANSITION);
 }
 
