@@ -327,6 +327,17 @@ function putImagetoElement(featuredBox) {
 
 function updateFeaturedNav(featuredBox) {
     var navButtons = featuredBox.querySelector('.featured-nav-buttons');
+    const oldButtons = featuredBox.querySelectorAll('.featured-nav-buttons a');
+
+    //add fadeout to previous button
+    for (var indexOfPrevious = 0; indexOfPrevious < oldButtons.length; indexOfPrevious++) {
+        const button = oldButtons[indexOfPrevious];
+
+        if (button.classList.contains("featured-current-nav-position")) {
+            break;
+        }
+    }
+
     navButtons.innerHTML = "";
 
     // Generate new <a> tags
@@ -337,6 +348,10 @@ function updateFeaturedNav(featuredBox) {
 
         if (index == RECIPE_INDEX) {
             newButton.classList.add("featured-current-nav-position");
+        }
+
+        if (index == indexOfPrevious) {
+            newButton.classList.add("featured-nav-phasing-out");
         }
 
         navButtons.appendChild(newButton);
