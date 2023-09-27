@@ -493,6 +493,7 @@ function swipeToNext(goingRight, SWIPE_TRANSITION) {
 
     const oldSide = goingRight ? fRIGHT : fLEFT;
     const newSide = goingRight ? fLEFT : fRIGHT;
+    const offset = goingRight ? 1 : -1;
 
     //swap elements after timeout
     setTimeout(() => {
@@ -502,12 +503,14 @@ function swipeToNext(goingRight, SWIPE_TRANSITION) {
         //put new mid's data to mid box (which is now to the side)
         printToFeatured(recipeList[RECIPE_INDEX], featuredBoxes[fMID]);
 
+        console.log("list[", RECIPE_INDEX + (offset), "], boxes[", oldSide, "]")
         //put old mid's data to right?left
-        printToFeatured(recipeList[RECIPE_INDEX + (goingRight ? 1 : -1)], featuredBoxes[oldSide]);
+        printToFeatured(recipeList[RECIPE_INDEX + (offset)], featuredBoxes[oldSide]);
 
         if (!atEdge()) {
+            console.log("edge[", RECIPE_INDEX + (offset * -1), "], box[", newSide, "]")
             //put new data to left?right
-            printToFeatured(recipeList[RECIPE_INDEX + (goingRight ? -1 : 1)], featuredBoxes[newSide]);
+            printToFeatured(recipeList[RECIPE_INDEX + (offset * -1)], featuredBoxes[newSide]);
         }
 
         //move all elements back to default position
@@ -519,8 +522,9 @@ function swipeToNext(goingRight, SWIPE_TRANSITION) {
         //make element beyond edge invisible
         if (atEdge()) {
             featuredBoxes[newSide].style.opacity = "0";
+            //TODO: show end of list indicator
         } else {
-            featuredBoxes[newSide].style.opacity = "1";
+            featuredBoxes[oldSide].style.opacity = "1";
         }
     }, SWIPE_TRANSITION);
 }
@@ -528,11 +532,6 @@ function swipeToNext(goingRight, SWIPE_TRANSITION) {
 function nudgeListIndex(goingRight) {
     console.log("current index: ", RECIPE_INDEX)
 
-    //can go further
-    if (!atEdge()) {
-        goingRight ? RECIPE_INDEX-- : RECIPE_INDEX++;
-        console.log("moved to: ", RECIPE_INDEX);
-    } else {
-        console.log("can't move further");
-    }
+    goingRight ? RECIPE_INDEX-- : RECIPE_INDEX++;
+    console.log("moved to: ", RECIPE_INDEX);
 }
