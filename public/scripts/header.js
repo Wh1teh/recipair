@@ -287,19 +287,25 @@ function printToFeatured(jsonObj, featuredBox) {
     featuredBox.querySelector(".star-rating").setAttribute("data-content", jsonObj.rating);
     updateRatings(featuredBox);
 
-    featuredBox.querySelector(".featured-submitter a").innerHTML = "PLACEHOLDER"; //TODO  
+    featuredBox.querySelector(".featured-submitter a").innerHTML = "PLACEHOLDER"; //TODO 
+
+    updateFeaturedNav(featuredBox);
 }
 
 function cloneFromFeatured(cloneFrom, cloneTo) {
     cloneTo.appendChild(cloneFrom.cloneNode(true));
 }
 
-function updateRatings(featuredBox) {
+function updateRatings(featuredBox, forceRating = -1) {
     //stars gradient
     const MAX_RATING = 5;
 
     var stars = featuredBox.querySelector('.star-rating');
-    var rating = parseFloat(stars.getAttribute('data-content'));
+    if (forceRating < 0) {
+        var rating = parseFloat(stars.getAttribute('data-content'));
+    } else {
+        var rating = forceRating;
+    }
 
     stars.style.backgroundImage = 'linear-gradient(90deg, var(--second-color) '
         + rating / MAX_RATING * 100 + '%, var(--first-background-light) 0%)';
@@ -319,14 +325,33 @@ function putImagetoElement(featuredBox) {
     imgElement.setAttribute("src", imgPath);
 }
 
+function updateFeaturedNav(featuredBox) {
+    var navButtons = featuredBox.querySelector('.featured-nav-buttons');
+    navButtons.innerHTML = "";
+
+    // Generate new <a> tags
+    for (var index = 0; index < recipeList.length; index++) {
+        var newButton = document.createElement('a');
+        newButton.href = ''; //TODO: replace with the URL
+        newButton.textContent = '•';
+
+        if (index == RECIPE_INDEX) {
+            newButton.classList.add("featured-current-nav-position");
+        }
+
+        navButtons.appendChild(newButton);
+    }
+}
+
+
 // Get all the star spans
-const starSpans = document.querySelectorAll('.star-rating span');
 const starContainer = document.querySelector('.star-rating');
+const starSpans = starContainer.querySelectorAll('.star-rating span');
+
+console.log("starContainer:", starContainer, "starSpans:", starSpans)
 
 starContainer.addEventListener('mouseleave', (event) => {
-    console.log("unhovered");
-
-    updateRatings();
+    updateRatings(document.querySelector(".splash-featured"));
 });
 
 // Add a click event listener to each star span
@@ -334,9 +359,8 @@ for (let index = 0; index < starSpans.length; index++) {
     starSpans[index].addEventListener('mouseover', (event) => {
         // Get the clicked star
         const element = starSpans[index];
-        console.log(element + ', ' + index); // Print the position of star
 
-        updateRatings(index + 1);
+        updateRatings(document.querySelector(".splash-featured"), index + 1);
     });
 
 }
