@@ -485,18 +485,11 @@ var SWIPE_LENIENCY = 8;
 const SWIPE_TRANSITION = 500;
 
 function disableScroll() {
-    // Get the current page scroll position
-    scrollTop = document.documentElement.scrollTop || window.pageYOffset;
-    scrollLeft = document.documentElement.scrollLeft || window.pageXOffset;
-
-    // if any scroll is attempted, set this to the previous value
-    window.onscroll = function () {
-        window.scrollTo(scrollLeft, scrollTop);
-    }
+    document.body.classList.add("stop-scrolling");
 }
-
+  
 function enableScroll() {
-    window.onscroll = function () { };
+    document.body.classList.remove("stop-scrolling");
 }
 
 featuredContainer.addEventListener('touchstart', function (e) {

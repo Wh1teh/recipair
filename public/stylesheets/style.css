@@ -27,6 +27,11 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
+
 a {
   text-decoration: underline dotted 1px;
 }
