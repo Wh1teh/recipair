@@ -488,15 +488,18 @@ var currentX = 0;
 
 var startY;
 var currentY = 0;
+var debugBool = false;
 
 var SWIPE_LENIENCY = 8;
 const SWIPE_TRANSITION = 500;
 
 function disableScroll() {
+    debugBool = false;
     document.body.classList.add("stop-scrolling");
 }
 
 function enableScroll() {
+    debugBool = true;
     document.body.classList.remove("stop-scrolling");
 }
 
@@ -518,7 +521,7 @@ featuredContainer.addEventListener('touchmove', function (e) {
     currentY += moveY;
     startY = e.touches[0].clientY;
 
-    debugPrintToSearch((Math.abs(currentY)  + ", " + (featuredContainer.offsetHeight / 2)));
+    debugPrintToSearch((Math.abs(currentY)  + ", " + (featuredContainer.offsetHeight / 2)) + ", " + debugBool);
     if (Math.abs(currentY) > (featuredContainer.offsetHeight / 2)) {
         enableScroll();
     }
