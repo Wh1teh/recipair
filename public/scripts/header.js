@@ -513,7 +513,8 @@ featuredContainer.addEventListener('touchmove', function (e) {
     currentY += moveY;
     startY = e.touches[0].clientY;
 
-    if(Math.abs(currentY) > (featuredContainer.offsetHeight / 2)) {
+    document.getElementById("splash-search").setAttribute("placeholder", (currentY + ", " + (featuredContainer.offsetHeight / 2)))
+    if (Math.abs(currentY) > (featuredContainer.offsetHeight / 2)) {
         enableScroll();
     }
 
@@ -531,11 +532,10 @@ featuredContainer.addEventListener('touchend', function () {
     var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
     console.log("Viewport width: " + viewportWidth + ", currentX: " + currentX);
 
+    currentY = 0;
     if (viewportWidth / SWIPE_LENIENCY > Math.abs(currentX)) {
         currentX = 0;
-        currentY = 0;
     } else {
-        currentY = 0;
         swipeToNext(currentX > 0, SWIPE_TRANSITION);
     }
 
