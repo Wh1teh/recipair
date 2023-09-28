@@ -480,46 +480,48 @@ console.log(featuredBoxes)
 
 var startX;
 var currentX = 0;
-var isDragging = false;
 
 var SWIPE_LENIENCY = 8;
 const SWIPE_TRANSITION = 500;
 
+function disableScroll() {
+    // Get the current page scroll position
+    scrollTop = document.documentElement.scrollTop || window.pageYOffset;
+    scrollLeft = document.documentElement.scrollLeft || window.pageXOffset;
+
+    // if any scroll is attempted, set this to the previous value
+    window.onscroll = function () {
+        window.scrollTo(scrollLeft, scrollTop);
+    }
+}
+
+function enableScroll() {
+    window.onscroll = function () { };
+}
+
 featuredContainer.addEventListener('touchstart', function (e) {
     startX = e.touches[0].clientX;
     isDragging = true;
+    disableScroll();
 });
 
 featuredContainer.addEventListener('touchmove', function (e) {
-    if (isDragging) {
-        var moveX = e.touches[0].clientX - startX;
-        currentX += moveX;
-        startX = e.touches[0].clientX;
+    if (!isDragging) return;
 
-        // if (atEdge()) {
-        //     //see which way can go
-        //     if (currentX >= 0 ? RECIPE_INDEX <= 0 : RECIPE_INDEX + 1 >= recipeList.length) {
-        //         var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+    var moveX = e.touches[0].clientX - startX;
+    currentX += moveX;
+    startX = e.touches[0].clientX;
 
-        //         //movement is restricted
-        //         if (viewportWidth / SWIPE_LENIENCY < Math.abs(currentX)) {
-        //             let mult = currentX < 0 ? -1 : 1;
-        //             currentX = viewportWidth / SWIPE_LENIENCY * mult;
-        //             return;
-        //         }
-        //     }
-        // }
-
-        for (let index = 0; index < 3; index++) {
-            featuredBoxes[index].style.transform = "translateX(" + currentX + "px)";
-            featuredContainer.style.transition = "0ms";
-        }
+    for (let index = 0; index < 3; index++) {
+        featuredBoxes[index].style.transform = "translateX(" + currentX + "px)";
+        featuredContainer.style.transition = "0ms";
     }
 });
 
 
 featuredContainer.addEventListener('touchend', function () {
     isDragging = false;
+    enableScroll()
 
     var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
     console.log("Viewport width: " + viewportWidth + ", currentX: " + currentX);
