@@ -481,19 +481,23 @@ console.log(featuredBoxes)
 var startX;
 var currentX = 0;
 
+var startY;
+var currentY = 0;
+
 var SWIPE_LENIENCY = 8;
 const SWIPE_TRANSITION = 500;
 
 function disableScroll() {
     document.body.classList.add("stop-scrolling");
 }
-  
+
 function enableScroll() {
     document.body.classList.remove("stop-scrolling");
 }
 
 featuredContainer.addEventListener('touchstart', function (e) {
     startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
     isDragging = true;
     disableScroll();
 });
@@ -505,6 +509,14 @@ featuredContainer.addEventListener('touchmove', function (e) {
     currentX += moveX;
     startX = e.touches[0].clientX;
 
+    var moveY = e.touches[0].clientY - startY;
+    currentY += moveY;
+    startY = e.touches[0].clientY;
+
+    if(Math.abs(currentY) > (featuredContainer.offsetHeight / 2)) {
+        enableScroll();
+    }
+
     for (let index = 0; index < 3; index++) {
         featuredBoxes[index].style.transform = "translateX(" + currentX + "px)";
         featuredContainer.style.transition = "0ms";
@@ -514,14 +526,16 @@ featuredContainer.addEventListener('touchmove', function (e) {
 
 featuredContainer.addEventListener('touchend', function () {
     isDragging = false;
-    enableScroll()
+    enableScroll();
 
     var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
     console.log("Viewport width: " + viewportWidth + ", currentX: " + currentX);
 
     if (viewportWidth / SWIPE_LENIENCY > Math.abs(currentX)) {
         currentX = 0;
+        currentY = 0;
     } else {
+        currentY = 0;
         swipeToNext(currentX > 0, SWIPE_TRANSITION);
     }
 
