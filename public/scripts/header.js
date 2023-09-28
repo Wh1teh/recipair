@@ -327,7 +327,7 @@ function putImagetoElement(featuredBox) {
 
 function updateFeaturedNav(featuredBox) {
     var navButtons = featuredBox.querySelector('.featured-nav-buttons');
-    const oldButtons = featuredBox.querySelectorAll('.featured-nav-buttons a');
+    const oldButtons = featuredBox.querySelectorAll('.featured-nav-buttons span');
 
     //add fadeout to previous button
     for (var indexOfPrevious = 0; indexOfPrevious < oldButtons.length; indexOfPrevious++) {
@@ -342,8 +342,8 @@ function updateFeaturedNav(featuredBox) {
 
     // Generate new <a> tags
     for (var index = 0; index < recipeList.length; index++) {
-        var newButton = document.createElement('a');
-        newButton.href = ''; //TODO: replace with the URL
+        var newButton = document.createElement('span');
+        // newButton.href = ''; //TODO: replace with the URL
         newButton.textContent = '•';
 
         if (index == RECIPE_INDEX) {
@@ -356,6 +356,27 @@ function updateFeaturedNav(featuredBox) {
 
         navButtons.appendChild(newButton);
     }
+
+    for (let index = 0; index < recipeList.length; index++) {
+        const element = navButtons.children[index];
+        element.addEventListener("click", () => {
+            navButtonClicked(index);
+        })
+    }
+}
+
+function navButtonClicked(buttonIndex) {
+    console.log(buttonIndex)
+
+    //see if index is left or right of current
+    var goingLeft = false;
+    buttonIndex < RECIPE_INDEX ? goingLeft = true : goingLeft = false;
+
+    //move RECIPE_INDEX accordingly 
+    RECIPE_INDEX = buttonIndex + (goingLeft ? 1 : -1);
+
+    //move left or right
+    swipeToNext(goingLeft)
 }
 
 
@@ -535,9 +556,9 @@ function atEdge() {
     }
 }
 
-function swipeToNext(goingRight, SWIPE_TRANSITION) {
+function swipeToNext(goingLeft, SWIPE_TRANSITION) {
     if (atEdge()) {
-        if (goingRight ? RECIPE_INDEX <= 0 : RECIPE_INDEX + 1 >= recipeList.length) {
+        if (goingLeft ? RECIPE_INDEX <= 0 : RECIPE_INDEX + 1 >= recipeList.length) {
             console.log("ALREADY AT THE EDGE");
 
             //move all elements back to default position
@@ -549,22 +570,22 @@ function swipeToNext(goingRight, SWIPE_TRANSITION) {
     var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
     var isMobile = window.matchMedia("(max-aspect-ratio: 6/5)").matches;
 
-    if (goingRight) {
-        //do right stuff
+    if (goingLeft) {
+        //do left stuff
         currentX = featuredBoxes[fMID].clientWidth * (isMobile ? 1.333 : 1.25);
     } else {
-        //do left stuff
+        //do right stuff
         currentX = featuredBoxes[fMID].clientWidth * (isMobile ? 1.333 : 1.25) * -1;
     }
 
-    const oldSide = goingRight ? fRIGHT : fLEFT;
-    const newSide = goingRight ? fLEFT : fRIGHT;
-    const offset = goingRight ? 1 : -1;
+    const oldSide = goingLeft ? fRIGHT : fLEFT;
+    const newSide = goingLeft ? fLEFT : fRIGHT;
+    const offset = goingLeft ? 1 : -1;
 
     //swap elements after timeout
     setTimeout(() => {
         //move index
-        nudgeListIndex(goingRight);
+        nudgeListIndex(goingLeft);
 
         //put new mid's data to mid box (which is now to the side)
         printToFeatured(recipeList[RECIPE_INDEX], featuredBoxes[fMID]);
@@ -595,9 +616,9 @@ function swipeToNext(goingRight, SWIPE_TRANSITION) {
     }, SWIPE_TRANSITION);
 }
 
-function nudgeListIndex(goingRight) {
+function nudgeListIndex(goingLeft) {
     console.log("current index: ", RECIPE_INDEX)
 
-    goingRight ? RECIPE_INDEX-- : RECIPE_INDEX++;
+    goingLeft ? RECIPE_INDEX-- : RECIPE_INDEX++;
     console.log("moved to: ", RECIPE_INDEX);
 }

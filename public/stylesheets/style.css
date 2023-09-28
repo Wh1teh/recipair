@@ -593,7 +593,7 @@ header {
   width: 50%;
 }
 
-.featured-nav a {
+.featured-nav span {
   flex: 1;
   text-align: center;
 
@@ -603,9 +603,11 @@ header {
   color: var(--first-color);
 
   /* text-shadow: 0 0 4px rgba(0 0 0 / 90%); */
+
+  cursor: pointer;
 }
 
-.featured-nav a.featured-current-nav-position {
+.featured-nav span.featured-current-nav-position {
   color: var(--first-color);
 
   animation-name: nav-button-glow;
@@ -614,7 +616,7 @@ header {
   animation-timing-function: ease-out;
 }
 
-.featured-nav a.featured-nav-phasing-out {
+.featured-nav span.featured-nav-phasing-out {
   animation-name: nav-button-glow;
   animation-duration: 500ms;
   animation-fill-mode: backwards;
