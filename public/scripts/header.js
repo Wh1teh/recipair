@@ -414,6 +414,11 @@ function isJson(jsonString) {
     }
 }
 
+//for mobile debug reasons print to search bar
+function debugPrintToSearch(whatToPrint) {
+    document.getElementById("splash-search").setAttribute("placeholder", whatToPrint);
+}
+
 
 //mobile stuff below
 
@@ -513,7 +518,7 @@ featuredContainer.addEventListener('touchmove', function (e) {
     currentY += moveY;
     startY = e.touches[0].clientY;
 
-    document.getElementById("splash-search").setAttribute("placeholder", (currentY + ", " + (featuredContainer.offsetHeight / 2)))
+    debugPrintToSearch((Math.abs(currentY)  + ", " + (featuredContainer.offsetHeight / 2)));
     if (Math.abs(currentY) > (featuredContainer.offsetHeight / 2)) {
         enableScroll();
     }
