@@ -490,27 +490,6 @@ var startY;
 var currentY = 0;
 var scrollingEnabled = false;
 
-// Select the target element 
-const targetElement = document.body;
-// Create a new instance of MutationObserver 
-const observer = new MutationObserver((mutations) => {
-    // Loop through each mutation 
-    mutations.forEach((mutation) => {
-        // Check if the class list has changed 
-        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-            // The class list has changed 
-            console.log('Class list has changed:', targetElement.classList);
-            // Do something else 
-        }
-    });
-});
-
-// Configuration for the observer 
-const config = { attributes: true };
-
-// Start observing the target element 
-observer.observe(targetElement, config);
-
 var SWIPE_LENIENCY = 8;
 const SWIPE_TRANSITION = 500;
 
@@ -542,8 +521,7 @@ featuredContainer.addEventListener('touchmove', function (e) {
     currentY += moveY;
     startY = e.touches[0].clientY;
 
-    debugPrintToSearch((Math.abs(currentY) + ", " + (featuredContainer.offsetHeight / 2)) + ", " + scrollingEnabled
-    + ", " + document.body.classList);
+    // debugPrintToSearch((Math.abs(currentY) + ", " + (featuredContainer.offsetHeight / 2)) + ", " + scrollingEnabled);
     if (Math.abs(currentY) > (featuredContainer.offsetHeight / 2)
         && !scrollingEnabled) {
         enableScroll();
