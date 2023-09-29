@@ -510,6 +510,10 @@ featuredContainer.addEventListener('touchstart', function (e) {
     disableScroll();
 });
 
+var featuredBoxHeight = featuredContainer.offsetHeight;
+setInterval(() => {
+    featuredBoxHeight = featuredContainer.offsetHeight;
+}, 5000);
 featuredContainer.addEventListener('touchmove', function (e) {
     if (!isDragging) return;
 
@@ -522,7 +526,7 @@ featuredContainer.addEventListener('touchmove', function (e) {
     startY = e.touches[0].clientY;
 
     // debugPrintToSearch((Math.abs(currentY) + ", " + (featuredContainer.offsetHeight / 2)) + ", " + scrollingEnabled);
-    if (Math.abs(currentY) > (featuredContainer.offsetHeight / 2)
+    if (Math.abs(currentY) > (featuredBoxHeight / 2)
         && !scrollingEnabled) {
         enableScroll();
     }
