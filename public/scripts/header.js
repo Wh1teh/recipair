@@ -227,10 +227,12 @@ function putRecipeData(serverResponse, animationTimer) {
     }
 
     if (recipeList.length >= 3) {
+        //reverse first half of list so the best result is in the middle
         RECIPE_INDEX = Math.floor(jsonTable.length / 2);
-        let firstHalf = jsonTable.slice(0, RECIPE_INDEX);
 
-        recipeList.splice(0, Math.ceil(jsonTable.length / 2), ...firstHalf.reverse());
+        let firstHalf = jsonTable.slice(0, RECIPE_INDEX + 1);
+
+        recipeList.splice(0, Math.floor(jsonTable.length / 2 + 1), ...firstHalf.reverse());
 
         printToFeatured(recipeList[RECIPE_INDEX], featuredBoxes[fMID]);
         printToFeatured(recipeList[RECIPE_INDEX - 1], featuredBoxes[fLEFT]);
@@ -253,7 +255,7 @@ function putRecipeData(serverResponse, animationTimer) {
     }
 
 
-    console.log("final received list: ", recipeList);
+    console.log("original list: ", jsonTable, "final received list: ", recipeList);
 
     finishFeaturedTransition(animationTimer);
 }
