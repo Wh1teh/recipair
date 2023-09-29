@@ -1,8 +1,13 @@
 //background parallax effect
+var parallax = document.querySelector('.splash-parallax');
+var PARALLAX_MULTIPLIER = 0.1;
+parallax.style.transform = 'translateZ(-1px) scale(' + (1 + PARALLAX_MULTIPLIER)
+        + ') translateY(' + (0 * PARALLAX_MULTIPLIER) + 'px)';
 window.addEventListener('scroll', function () {
     var parallax = document.querySelector('.splash-parallax');
     var scrolled = window.scrollY;
-    parallax.style.transform = 'translateY(' + (scrolled * 0.8) + 'px)';
+    parallax.style.transform = 'translateZ(-1px) scale(' + (1 + PARALLAX_MULTIPLIER * 2)
+        + ') translateY(' + (scrolled * PARALLAX_MULTIPLIER) + 'px)';
 });
 
 
