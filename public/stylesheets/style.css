@@ -27,6 +27,8 @@ body {
   background-color: #000000;
 
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+
+  height: 100dvh; /* sus? */
 }
 
 .stop-scrolling {
@@ -836,10 +838,14 @@ header {
     position: relative;
 
     margin: auto;
+    top: calc(-1 * var(--nav-height));
 
     width: 60%;
 
     color: var(--first-color);
+
+    background: var(--third-color);
+    padding: var(--title-bg-padding);
   }
 }
 
