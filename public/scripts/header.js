@@ -205,8 +205,34 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => {
             // Handle error 
             console.error(error);
+            putRecipeData(getErrorObject());
         });
 });
+
+function getErrorObject() {
+    const errorObject = [
+        {
+            content:
+                "Something went wrong..."
+            , date:
+                null
+            , edit_date:
+                null
+            , edited:
+                null
+            , id:
+                null
+            , rating:
+                null
+            , title:
+                "Network Error"
+            , writer_id:
+                null
+        }
+    ]
+
+    return JSON.stringify(errorObject);
+}
 
 var recipeList = [];
 var RECIPE_INDEX = 0;
