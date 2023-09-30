@@ -218,21 +218,16 @@ function putRecipeData(serverResponse, animationTimer) {
         throw new Error("Empty response");
     }
 
-    // console.log("received: ", jsonTable);
-
-    // clear list
-    recipeList = [];
-    for (let index = 0; index < jsonTable.length; index++) {
-        recipeList.push(jsonTable[index]);
-    }
+    //replace global list with sorted json
+    recipeList = zigzagSort(jsonTable);
 
     if (recipeList.length >= 3) {
         //reverse first half of list so the best result is in the middle
         RECIPE_INDEX = Math.floor(jsonTable.length / 2);
 
-        let firstHalf = jsonTable.slice(0, RECIPE_INDEX + 1);
+        // let firstHalf = jsonTable.slice(0, RECIPE_INDEX + 1);
 
-        recipeList.splice(0, Math.floor(jsonTable.length / 2 + 1), ...firstHalf.reverse());
+        // recipeList.splice(0, Math.floor(jsonTable.length / 2 + 1), ...firstHalf.reverse());
 
         printToFeatured(recipeList[RECIPE_INDEX], featuredBoxes[fMID]);
         printToFeatured(recipeList[RECIPE_INDEX - 1], featuredBoxes[fLEFT]);
@@ -255,9 +250,28 @@ function putRecipeData(serverResponse, animationTimer) {
     }
 
 
-    console.log("original list: ", jsonTable, "final received list: ", recipeList);
+    console.log("final list: ", recipeList);
 
     finishFeaturedTransition(animationTimer);
+}
+
+function zigzagSort(objects) {
+    // Sort the objects by the "rating" key in descending order
+    objects.sort((a, b) => b.rating - a.rating);
+
+    const result = [];
+
+    //add to end and front alternatingly from the top, resulting in lowest values being at the edges
+    for (let index = 0; index < objects.length; index++) {
+        const element = objects[index];
+        if (index % 2 == 0) {
+            result.push(element);
+        } else {
+            result.unshift(element);
+        }
+    }
+
+    return result;
 }
 
 const TRANSITION_LEN = 1000;
