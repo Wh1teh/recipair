@@ -175,13 +175,34 @@ splashForm.addEventListener("submit", function (event) {
 
     Promise.all([requestPromise, startFeaturedTransition()])
         .then(([responseText, animationTimer]) => {
-            putRecipeData(responseText, animationTimer);
+            handleResponseJson(responseText);
+            putDataToFeatured();
+            finishFeaturedTransition(animationTimer);
         })
         .catch(error => {
             // Handle error 
             console.error(error);
+            displaySearchError("Found no results...");
+            putDataToFeatured(); //put old data, TODO: check if old data even exists
+            finishFeaturedTransition(0);
         });
 });
+
+function displaySearchError(errorText) {
+    var element = document.getElementById("splash-form");
+
+    element.classList.add("search-error", "nothing-found");
+
+    element.setAttribute("data-content", errorText);
+
+    setTimeout(() => {
+        element.classList.add("fading-out");
+
+        setTimeout(() => {
+            element.classList.remove("search-error", "nothing-found", "fading-out");
+        }, 5000);
+    }, 15000);
+}
 
 //
 document.addEventListener('DOMContentLoaded', function () {
@@ -200,12 +221,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     Promise.all([requestPromise, startFeaturedTransition(0)])
         .then(([responseText, animationTimer]) => {
-            putRecipeData(responseText, animationTimer);
+            handleResponseJson(responseText);
+            putDataToFeatured();
+            finishFeaturedTransition(animationTimer);
         })
         .catch(error => {
             // Handle error 
             console.error(error);
-            putRecipeData(getErrorObject());
+            handleResponseJson(getErrorObject());
+            putDataToFeatured();
+            finishFeaturedTransition(animationTimer);
         });
 });
 
@@ -236,7 +261,7 @@ function getErrorObject() {
 
 var recipeList = [];
 var RECIPE_INDEX = 0;
-function putRecipeData(serverResponse, animationTimer) {
+function handleResponseJson(serverResponse, animationTimer) {
     // console.log(serverResponse);
 
     var jsonTable = JSON.parse(serverResponse)
@@ -247,13 +272,13 @@ function putRecipeData(serverResponse, animationTimer) {
     //replace global list with sorted json
     recipeList = zigzagSort(jsonTable);
 
+    // putDataToFeatured(animationTimer);
+}
+
+function putDataToFeatured() {
     if (recipeList.length >= 3) {
         //reverse first half of list so the best result is in the middle
-        RECIPE_INDEX = Math.floor(jsonTable.length / 2);
-
-        // let firstHalf = jsonTable.slice(0, RECIPE_INDEX + 1);
-
-        // recipeList.splice(0, Math.floor(jsonTable.length / 2 + 1), ...firstHalf.reverse());
+        RECIPE_INDEX = Math.floor(recipeList.length / 2);
 
         printToFeatured(recipeList[RECIPE_INDEX], featuredBoxes[fMID]);
         printToFeatured(recipeList[RECIPE_INDEX - 1], featuredBoxes[fLEFT]);
@@ -275,10 +300,9 @@ function putRecipeData(serverResponse, animationTimer) {
         }
     }
 
-
     console.log("final list: ", recipeList);
 
-    finishFeaturedTransition(animationTimer);
+    // finishFeaturedTransition(animationTimer);
 }
 
 function zigzagSort(objects) {
