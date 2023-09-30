@@ -216,6 +216,58 @@ header {
 /*  */
 /* SEARCH BAR SEARCH-BAR SEARCHBAR */
 /*  */
+.search-form.search-error.nothing-found::before {
+  /* for error messages */
+  z-index: 10000;
+  content: attr(data-content);
+  position: absolute;
+
+  top: -100%;
+  padding: 8px;
+
+  left: 50%;
+  transform: translate(-50%, -8px);
+
+  width: 60%;
+
+  background: black;
+  color: white;
+
+  text-align: center;
+  font-weight: bold;
+
+  border-radius: 5px;
+  filter: drop-shadow(0 0 8px rgba(0 0 0 / 20%));
+
+  animation-name: fade-in-opacity;
+  animation-duration: 500ms;
+}
+
+.search-form.search-error.nothing-found.fading-out::before {
+  animation-name: fade-out-opacity;
+  animation-duration: 2000ms;
+}
+
+@keyframes fade-in-opacity {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out-opacity {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
 .search-form {
   position: relative;
 }
