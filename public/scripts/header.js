@@ -38,7 +38,7 @@ navOpener.addEventListener("click", () => {
 
             element.classList.add("close-nav");
 
-            if(element.tagName === "LI") {
+            if (element.tagName === "LI") {
                 element.style.animationDelay = 0 + "ms";
             }
         });
@@ -56,7 +56,7 @@ navOpener.addEventListener("click", () => {
 
             element.classList.add("open-nav");
 
-            if(element.tagName === "LI") {
+            if (element.tagName === "LI") {
                 element.style.animationDelay = animationDelay + "ms";
                 animationDelay += animationIncrement;
             }
@@ -438,14 +438,20 @@ function finishFeaturedTransition(animationTimer) {
 }
 
 function printToFeatured(jsonObj, featuredBox) {
+    const pathToRecipe = "recipe/" + jsonObj.id;
+    
     // console.log("obj: ", jsonObj, "box: ", featuredBox)
     var title = featuredBox.querySelector(".featured-title h3");
+    title.parentNode.href = pathToRecipe;
+
     title.innerHTML = jsonObj.title;
     reduceFontIfWrapped(title, 2, "em");
 
     featuredBox.querySelector(".featured-text p").innerHTML = jsonObj.content;
+    featuredBox.querySelector(".featured-text a").href = pathToRecipe;
 
     putImagetoElement(featuredBox);
+    featuredBox.querySelector("img").parentNode.href = pathToRecipe;
 
     featuredBox.querySelector(".star-rating").setAttribute("data-content", jsonObj.rating);
     updateRatings(featuredBox);
