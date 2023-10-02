@@ -422,6 +422,9 @@ header {
   /* animation-name: featured-text-transition-out;
   animation-duration: 1s;
   animation-iteration-count: infinite; */
+
+  text-align: center;
+  text-wrap: balance;
 }
 
 .featured-title h3.animation-in::after,
