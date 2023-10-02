@@ -454,9 +454,7 @@ function updateFeaturedNav(featuredBox) {
 
         if (index == RECIPE_INDEX) {
             newButton.classList.add("featured-current-nav-position");
-        }
-
-        if (index == indexOfPrevious) {
+        } else if (index == indexOfPrevious) {
             newButton.classList.add("featured-nav-phasing-out");
         }
 
