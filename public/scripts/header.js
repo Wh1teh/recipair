@@ -611,13 +611,9 @@ featuredContainer.addEventListener('touchstart', function (e) {
     startX = e.touches[0].clientX;
     startY = e.touches[0].clientY;
     isDragging = true;
-    disableScroll();
+    enableScroll();
 });
 
-var featuredBoxHalvedHeight = featuredContainer.offsetHeight / 2;
-setInterval(() => {
-    featuredBoxHalvedHeight = featuredContainer.offsetHeight / 2;
-}, 5000);
 featuredContainer.addEventListener('touchmove', function (e) {
     if (!isDragging) return;
 
@@ -625,15 +621,33 @@ featuredContainer.addEventListener('touchmove', function (e) {
     currentX += moveX;
     startX = e.touches[0].clientX;
 
-    var moveY = e.touches[0].clientY - startY;
-    currentY += moveY;
-    startY = e.touches[0].clientY;
+    //lock to initial drag direction
+    if (scrollingEnabled) {
+        var moveY = e.touches[0].clientY - startY;
+        currentY += moveY;
+        startY = e.touches[0].clientY;
 
-    // debugPrintToSearch((Math.abs(currentY) + ", " + (featuredContainer.offsetHeight / 2)) + ", " + scrollingEnabled);
-    if (!scrollingEnabled && Math.abs(currentY) > (featuredBoxHalvedHeight)) {
-        enableScroll();
+        var deltaX = Math.abs(currentX);
+        var deltaY = Math.abs(currentY);
+
+        //if neither past threshold then don't do anything
+        const scrollLockThreshold = 10;
+        if (deltaX < scrollLockThreshold && deltaY < scrollLockThreshold) return;
+
+        //which direction was dragged more
+        if (deltaX > deltaY) {
+            disableScroll();
+
+            //negate threshold from movement calculations
+            currentX += scrollLockThreshold * (currentX < 0 ? 1 : -1);
+        } else {
+            isDragging = false;
+        }
+
+        return;
     }
 
+    //move elements
     for (let index = 0; index < 3; index++) {
         featuredBoxes[index].style.transform = "translateX(" + currentX + "px)";
         featuredContainer.style.transition = "0ms";
