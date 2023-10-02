@@ -10,6 +10,60 @@ window.addEventListener('scroll', function () {
         + ') translateY(' + (scrolled * PARALLAX_MULTIPLIER) + 'px)';
 });
 
+// var navContainer = document.querySelector(".nav-container");
+// navContainer.addEventListener("click", () => {
+//     navContainer.classList.add("open-nav");
+//     navContainer.querySelectorAll('*').forEach(element => {
+//         element.classList.add("open-nav");
+//     });
+// })
+
+var navOpener = document.querySelector(".nav-opener");
+var mobileNavOpened = false;
+navOpener.addEventListener("click", () => {
+    var animationDelay = 1000;
+    var animationIncrement = 100;
+
+    if (mobileNavOpened) {
+        mobileNavOpened = false;
+
+        //reset classes otherwise reverse doesn't work (I love css)
+        navOpener.parentNode.classList.remove("open-nav");
+        void navOpener.parentNode.offsetWidth; // DOM reflow hack
+
+        navOpener.parentNode.classList.add("close-nav");
+        navOpener.parentNode.querySelectorAll('*').forEach(element => {
+            element.classList.remove("open-nav");
+            void element.offsetWidth; // DOM reflow hack
+
+            element.classList.add("close-nav");
+
+            if(element.tagName === "LI") {
+                element.style.animationDelay = 0 + "ms";
+            }
+        });
+    } else {
+        mobileNavOpened = true;
+
+        //reset classes otherwise reverse doesn't work (I love css)
+        navOpener.parentNode.classList.remove("close-nav");
+        void navOpener.parentNode.offsetWidth; // DOM reflow hack
+
+        navOpener.parentNode.classList.add("open-nav");
+        navOpener.parentNode.querySelectorAll('*').forEach(element => {
+            element.classList.remove("close-nav");
+            void element.offsetWidth; // DOM reflow hack
+
+            element.classList.add("open-nav");
+
+            if(element.tagName === "LI") {
+                element.style.animationDelay = animationDelay + "ms";
+                animationDelay += animationIncrement;
+            }
+        });
+    }
+})
+
 var isAtFooter = false;
 window.addEventListener('wheel', function (e) {
     //check based on aspect ratio
@@ -456,7 +510,7 @@ function putImagetoElement(featuredBox) {
 }
 
 function updateFeaturedNav(featuredBox) {
-    var navButtons = featuredBox.querySelector('.featured-nav-buttons');
+    var featuredNavButtons = featuredBox.querySelector('.featured-nav-buttons');
     const oldButtons = featuredBox.querySelectorAll('.featured-nav-buttons span');
 
     //add fadeout to previous button
@@ -468,7 +522,7 @@ function updateFeaturedNav(featuredBox) {
         }
     }
 
-    navButtons.innerHTML = "";
+    featuredNavButtons.innerHTML = "";
 
     // Generate new <a> tags
     for (var index = 0; index < recipeList.length; index++) {
@@ -482,18 +536,18 @@ function updateFeaturedNav(featuredBox) {
             newButton.classList.add("featured-nav-phasing-out");
         }
 
-        navButtons.appendChild(newButton);
+        featuredNavButtons.appendChild(newButton);
     }
 
     for (let index = 0; index < recipeList.length; index++) {
-        const element = navButtons.children[index];
+        const element = featuredNavButtons.children[index];
         element.addEventListener("click", () => {
-            navButtonClicked(index);
+            featuredNavButtonClicked(index);
         })
     }
 }
 
-function navButtonClicked(buttonIndex) {
+function featuredNavButtonClicked(buttonIndex) {
     console.log(buttonIndex)
 
     //see if index is left or right of current
