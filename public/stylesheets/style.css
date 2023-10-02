@@ -80,6 +80,16 @@ nav li {
   display: inline;
 }
 
+nav li.current-page-nav a::before {
+  content: '◆';
+  margin-left: -1em;
+  padding: 0 8px;
+}
+
+nav li:not(.current-page-nav) a {
+  margin-left: 0.5em;
+}
+
 nav a {
   padding: 0 16px 0 16px;
   text-decoration: none;
@@ -89,6 +99,8 @@ nav a,
 nav a:hover {
   color: var(--first-color);
 }
+
+
 
 h1 {
   color: var(--first-color);
@@ -1043,14 +1055,17 @@ footer {
     transform: translateY(-50%);
     margin-top: 0;
 
-    left: calc(25% - var(--nav-opener-padding));
+    /* left: calc(25% - var(--nav-opener-padding)); */
+
+    padding-left: var(--nav-opener-padding);
+    width: calc(100% - var(--nav-opener-padding) * 2);
   }
 
   nav li {
     margin: 0.2em 0;
     padding: 8px;
 
-    background: var(--first-background);
+    background: var(--first-color);
     border-radius: 20px 5px;
 
     transform: translate(200%, 0%);
@@ -1091,6 +1106,11 @@ footer {
     100% {
       transform: translate(0%, 400%);
     }
+  }
+
+  nav a {
+    color: #333;
+    text-shadow: none;
   }
 
   header {
