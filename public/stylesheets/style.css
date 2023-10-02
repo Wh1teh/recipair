@@ -1245,7 +1245,19 @@ footer {
 /*  */
 @media (max-aspect-ratio: 2/3) {
   .splash-content-container {
-    /* height: 30%; */
+    height: 40dvh;
+  }
+
+  .splash-featured-container {
+    height: 40dvh;
+    padding: 10dvh 0;
+
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .splash-featured {
+    height: 40dvh;
   }
 
   .splash-featured .featured-side {
