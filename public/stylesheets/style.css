@@ -432,6 +432,11 @@ header {
   background-color: var(--first-background);
 }
 
+a.featured-title {
+  color: var(--first-color);
+  text-decoration: none;
+}
+
 .featured-title.waiting,
 .featured-content.waiting {
   animation-name: featured-waiting;
