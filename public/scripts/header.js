@@ -385,7 +385,10 @@ function finishFeaturedTransition(animationTimer) {
 
 function printToFeatured(jsonObj, featuredBox) {
     // console.log("obj: ", jsonObj, "box: ", featuredBox)
-    featuredBox.querySelector(".featured-title h3").innerHTML = jsonObj.title;
+    var title = featuredBox.querySelector(".featured-title h3");
+    title.innerHTML = jsonObj.title;
+    reduceFontIfWrapped(title, 2, "em");
+
     featuredBox.querySelector(".featured-text p").innerHTML = jsonObj.content;
 
     putImagetoElement(featuredBox);
@@ -400,6 +403,27 @@ function printToFeatured(jsonObj, featuredBox) {
 
 function cloneFromFeatured(cloneFrom, cloneTo) {
     cloneTo.appendChild(cloneFrom.cloneNode(true));
+}
+
+function reduceFontIfWrapped(textElement, baseValue, unit) {
+    textElement.style.textWrap = "nowrap";
+    textElement.style.fontSize = baseValue + unit;
+
+    if (!isTextOverflowingHorizontally(textElement)) {
+        textElement.style.textWrap = "balance";
+        return;
+    }
+
+    textElement.style.textWrap = "balance";
+
+    var counter = 0;
+    while (isTextOverflowingVertically(textElement)) {
+        counter++;
+        baseValue /= 1.1;
+        textElement.style.fontSize = baseValue + unit;
+
+        if (counter > 100) break;
+    }
 }
 
 function updateRatings(featuredBox, forceRating = -1) {
@@ -517,6 +541,17 @@ function isJson(jsonString) {
         return false;
     }
 }
+
+function isTextOverflowingHorizontally(element) {
+    console.log(element.offsetWidth, " > ", element.parentNode.offsetWidth)
+    return element.offsetWidth > element.parentNode.offsetWidth;
+}
+
+function isTextOverflowingVertically(element) {
+    console.log(element.offsetHeight, " > ", element.parentNode.offsetHeight)
+    return element.offsetHeight > element.parentNode.offsetHeight;
+}
+
 
 //for mobile debug reasons print to search bar
 function debugPrintToSearch(whatToPrint) {
