@@ -241,11 +241,13 @@ header {
 
   animation-name: fade-in-opacity;
   animation-duration: 500ms;
+  animation-fill-mode: forwards;
 }
 
 .search-form.search-error.nothing-found.fading-out::before {
   animation-name: fade-out-opacity;
   animation-duration: 2000ms;
+  animation-fill-mode: forwards;
 }
 
 @keyframes fade-in-opacity {
