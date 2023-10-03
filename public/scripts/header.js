@@ -10,14 +10,7 @@ window.addEventListener('scroll', function () {
         + ') translateY(' + (scrolled * PARALLAX_MULTIPLIER) + 'px)';
 });
 
-// var navContainer = document.querySelector(".nav-container");
-// navContainer.addEventListener("click", () => {
-//     navContainer.classList.add("open-nav");
-//     navContainer.querySelectorAll('*').forEach(element => {
-//         element.classList.add("open-nav");
-//     });
-// })
-
+//nav
 var navOpener = document.querySelector(".nav-opener");
 var mobileNavOpened = false;
 navOpener.addEventListener("click", () => {
@@ -172,24 +165,6 @@ createDuplicateBoxes(
 var splashInput = document.querySelector("#splash-search");
 var splashContent = document.querySelector('.splash-content');
 var splashTitles = document.querySelectorAll(".splash-title");
-
-// splashInput.addEventListener("focus", function () {
-//     for (let index = 0; index < splashTitles.length; index++) {
-//         splashTitles[index].style.marginTop = "0";
-//     }
-
-//     splashContent.style.transform =
-//         'translateY(' + (splashTitles.length - 1) * (TITLE_OFFSET * TITLE_OFFSET_MULTIPLIER) + 'dvw)';
-// });
-
-// splashInput.addEventListener("blur", function () {
-//     for (let index = 0; index < splashTitles.length; index++) {
-//         splashTitles[index].style.marginTop =
-//             ((splashTitles.length - index - 1) * (TITLE_OFFSET * TITLE_OFFSET_MULTIPLIER)) + 'dvw';
-//     }
-
-//     splashContent.style.transform = 'translateY(' + 0 + 'dvh)';
-// });
 
 //handle form input
 var splashForm = document.querySelector("#splash-form");
@@ -439,7 +414,7 @@ function finishFeaturedTransition(animationTimer) {
 
 function printToFeatured(jsonObj, featuredBox) {
     const pathToRecipe = "recipe/" + jsonObj.id;
-    
+
     // console.log("obj: ", jsonObj, "box: ", featuredBox)
     var title = featuredBox.querySelector(".featured-title h3");
     title.parentNode.href = pathToRecipe;
