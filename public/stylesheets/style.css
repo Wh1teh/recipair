@@ -872,6 +872,21 @@ footer {
 }
 
 /*  */
+/* RECIPE */
+/*  */
+.recipe {
+  z-index: 0;
+  position: absolute;
+
+  top: 0;
+  padding: var(--title-bg-padding);
+  width: 60%;
+  margin: auto;
+
+  background-color: var(--first-background-light);
+}
+
+/*  */
 /* ASPECTRATIO ASPECT RATIO 6:5 */
 /*  */
 @media (max-aspect-ratio: 6/5) {
