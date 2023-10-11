@@ -6,6 +6,8 @@ const dotenv=require('dotenv');
 const jwt = require('jsonwebtoken');
 const cors=require('cors');
 
+var testRouter = require('./routes/test');
+
 var indexRouter = require('./routes/index');
 var pageRouter = require('./routes/page');
 var contactRouter = require('./routes/contact');
@@ -26,7 +28,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//suojaamattomat endpointit
+//unprotected endpoints
+app.use('/test', testRouter);
+
 app.use('/', indexRouter);
 app.use('/contact', contactRouter);
 
@@ -34,8 +38,8 @@ app.use('/login', loginRouter);
 
 app.use('/recipe', recipeRouter);
 
-//app.use(authenticateToken);
-//suojatut endpointit
+app.use(authenticateToken);
+//protected endpointit
 app.use('/course', courseRouter);
 
 
