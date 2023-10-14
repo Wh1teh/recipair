@@ -14,6 +14,9 @@ html {
   --title-bg-padding: 32px;
 
   --nav-opener-padding: 16px;
+
+  --global-perspective: 100dvw;
+  --global-perspective-origin: 75%;
 }
 
 /* * {
@@ -127,6 +130,9 @@ header {
   height: 100dvh;
 
   top: calc(0dvh - var(--nav-height));
+
+  perspective: var(--global-perspective);
+  perspective-origin: var(--global-perspective-origin);
 }
 
 .splash-parallax {
@@ -379,6 +385,11 @@ header {
 
   /* swipe animation stuff below */
   /* perspective: 100dvw; */
+
+  transform: rotate3d(1, 0, 0, 0deg);
+
+  -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 .splash-featured {
@@ -757,6 +768,18 @@ footer {
 /* ANIMATIONS */
 /*  */
 
+@keyframes rotate-featured {
+  0% {
+    transform: rotate3d(1, 0, 0, 0deg);
+  }
+
+  50% {}
+
+  100% {
+    transform: rotate3d(1, 0, 0, 180deg);
+  }
+}
+
 @keyframes slide-outside-from-right {
   from {
     right: 0%;
@@ -844,7 +867,9 @@ footer {
     display: flex;
     justify-content: flex-end;
 
-    top: 100dvh;
+    /* top: 100dvh; */
+    top: 50dvh;
+    transform: translateY(-50%);
 
     width: 100%;
     overflow: hidden;
@@ -854,16 +879,27 @@ footer {
     background-color: transparent;
 
     transition: 500ms;
+
+    perspective: var(--global-perspective);
+    perspective-origin: var(--global-perspective-origin);
+
+    pointer-events: none
   }
 
   .footer-container {
     margin-right: 5%;
 
     width: 40%;
+    height: 50dvh;
 
     background-color: var(--first-background);
 
-    border-radius: 20px 5px;
+    border-radius: 5px 20px;
+
+    transform: rotate3d(1, 0, 0, 180deg);
+
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
   }
 
   .footer-content {
@@ -1023,7 +1059,7 @@ footer {
   }
 
   @keyframes open-cross-top {
-    0% {
+    20% {
       transform: translate(0%, -200%) rotateZ(0deg);
     }
 
@@ -1055,7 +1091,7 @@ footer {
   }
 
   @keyframes open-cross-bottom {
-    0% {
+    20% {
       transform: translate(0%, 200%) rotateZ(0deg);
     }
 
