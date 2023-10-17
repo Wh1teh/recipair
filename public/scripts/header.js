@@ -37,16 +37,16 @@ window.addEventListener('wheel', function (e) {
         footer.style.transform = 'rotate3d(1, 0, 0, 360deg)';
         featured.style.transform = 'rotate3d(1, 0, 0, 180deg)';
         setTimeout(() => {
-            // document.querySelector(".splash-featured").style.opacity = '0';
-        }, ROTATION_TRANSITION);
+            footer.style.pointerEvents = 'auto';
+        }, ROTATION_TRANSITION / 2);
         
     } else {
         //move elements
         footer.style.transform = 'rotate3d(1, 0, 0, 180deg)';
         featured.style.transform = 'rotate3d(1, 0, 0, 0deg)';
         setTimeout(() => {
-
-        }, ROTATION_TRANSITION);
+            footer.style.pointerEvents = 'none';
+        }, ROTATION_TRANSITION) / 2;
     }
 
 }, false);
