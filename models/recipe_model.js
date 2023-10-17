@@ -5,7 +5,29 @@ const recipe = {
     return db.query('select * from recipe', callback);
   },
   getById: function (id, callback) {
-    return db.query('SELECT * FROM recipe WHERE id = ?', id, callback);
+    var query = 
+    `SELECT r.*, 
+    GROUP_CONCAT(
+      JSON_OBJECT(
+        'name', ri.name,
+        'amount', ri.amount,
+          'unit', ri.unit,
+          'optional', ri.optional,
+          'snippet', ri.snippet
+      )
+    ) AS ingredients
+    FROM recipe r
+    JOIN recipe_ingredient ri ON r.id = ri.recipe_id
+    WHERE r.id = ?
+    GROUP BY r.id;`;
+
+    return db.query(query, id, callback);
+  },
+  getIngredientsById: function (id, callback) {
+    return db.query('SELECT r.*, ri.* ' +
+      'FROM recipe r ' +
+      'JOIN recipe_ingredient ri ON r.id = ri.recipe_id ' +
+      'WHERE r.id = 4', id, callback);
   },
   getByParameters: function (params, callback) {
     //select all recipes that contain the keywords

@@ -47,7 +47,19 @@ function getHead() {
 }
 
 function getHeader() {
-    return fs.readFileSync(publicPath + 'header.html', 'utf8');
+    if (arguments.length > 1) {
+        throw new Error("Invalid number of parameters");
+    }
+
+    if (arguments.length === 0) {
+        return fs.readFileSync(publicPath + 'header.html', 'utf8');
+    }
+
+    if (arguments[0] == "mini") {
+        return fs.readFileSync(publicPath + 'miniheader.html', 'utf8');
+    }
+
+    throw new Error("Invalid parameter value");
 }
 
 function getNav() {

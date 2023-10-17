@@ -1,5 +1,30 @@
 <section class="recipe recipe-container">
     <h1>${recipe.title}</h1>
-    <p>${recipe.text}</p>
-    <p>Written by: ${recipe.writer}</p>
+
+    <div class="recipe-ingredients">
+
+    </div>
+
+    <div class="recipe-info">
+        <div class="featured-stars">
+            <p class="star-rating" data-content="2.5">
+                <span>★</span>
+                <span>★</span>
+                <span>★</span>
+                <span>★</span>
+                <span>★</span>
+            </p>
+            <p class="featured-ratings">423 ratings</p>
+        </div>
+
+        <div class="featured-submitter">Submitted by <a href="">${recipe.writer}</a></div>
+    </div>
+
+    <div class="recipe-image">
+        <img src="../img/featured_sample_omelette.jpg" alt="">
+    </div>
+
+    <div class="recipe-text">
+        <p>${recipe.text}</p>
+    </div>
 </section>
