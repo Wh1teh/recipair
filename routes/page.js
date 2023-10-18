@@ -2,15 +2,14 @@ const express = require('express');
 const router = express.Router();
 const page = require('../models/page_model');
 
-router.get('/',function(request,response){
-    page.getIndex(function(err,dbResult){
-        if(err){
-            response.json(err);
-        }
-        else{
+router.get('/', function(request, response) {
+    page.getIndex()
+        .then(dbResult => {
             response.json(dbResult);
-        }
-    })
+        })
+        .catch(err => {
+            response.json(err);
+        });
 });
 
 

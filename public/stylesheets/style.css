@@ -38,6 +38,8 @@ body {
 
   height: 100dvh;
   /* sus? */
+
+  overflow: visible;
 }
 
 .stop-scrolling {
@@ -861,7 +863,7 @@ footer {
 /*  */
 @media (min-aspect-ratio: 6/5) {
   body {
-    overflow: hidden;
+    /* overflow: hidden; */
   }
 
   footer {
@@ -917,6 +919,8 @@ footer {
   z-index: 0;
   position: absolute;
 
+  overflow: hidden;
+
   top: 0;
   padding: var(--title-bg-padding);
   width: 60%;
@@ -925,6 +929,7 @@ footer {
   background-color: var(--first-background-light);
 
   color: var(--first-color);
+  
 }
 
 .recipe-ingredients {
