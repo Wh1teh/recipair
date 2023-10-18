@@ -50,6 +50,12 @@ router.get('/:id', (req, res) => {
             var recipeHtml = fs.readFileSync(path + 'recipe/recipe.html', 'utf8');
             const $ = cheerio.load(recipeHtml);
 
+            //add title
+            // const title = JSON.parse(recipe.title);
+            console.log(recipe.title)
+            $('.recipe-title').append(recipe.title);
+
+            //add ingredients table
             const ingredients = JSON.parse("[" + recipe.ingredients + "]");
 
             //create table

@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
 
   res.end(buildHTML.combineHTMLcustom(
     [buildHTML.getHead(), buildHTML.getNav(), buildHTML.getHeader(),
-    buildHTML.getSections(recipeTemplate), buildHTML.getFooter()]
+    /*buildHTML.getSections(recipeTemplate),*/ buildHTML.getFooter()]
   ));
 });
 
