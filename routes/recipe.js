@@ -41,49 +41,66 @@ const buildHTML = require('../joinHTML.js');
 const path = __dirname + '/../public/html/pages/';
 
 router.get('/:id', (req, res) => {
-    recipe.getById(req.params.id, async function (err, dbResult) {
+    recipe.getById(req.params.id, function (err, dbResult) {
         if (err) {
             res.status(500).json({ error: 'Internal Server Error' });
         } else {
-            const recipe = dbResult[0];
+            recipe.getIngredientsById(req.params.id, function (err, ingredients) {
+                if (err) {
+                    res.status(500).json({ error: 'Internal Server Error' });
+                } else {
+                    const recipe = dbResult[0];
 
-            var recipeHtml = fs.readFileSync(path + 'recipe/recipe.html', 'utf8');
-            const $ = cheerio.load(recipeHtml);
+                    var recipeHtml = fs.readFileSync(path + 'recipe/recipe.html', 'utf8');
+                    const $ = cheerio.load(recipeHtml);
 
-            //add title
-            // const title = JSON.parse(recipe.title);
-            console.log(recipe.title)
-            $('.recipe-title').append(recipe.title);
+                    //add title
+                    $('.recipe-title').append(recipe.title);
 
-            //add ingredients table
-            const ingredients = JSON.parse("[" + recipe.ingredients + "]");
+                    //add ingredients table
+                    const table = $('<table>').addClass('ingredients-table');
+                    ingredients.forEach((ingredient) => {
+                        const row = $('<tr>');
 
-            //create table
-            const table = $('<table>').addClass('ingredients-table');
-            ingredients.forEach((ingredient) => {
-                const row = $('<tr>');
+                        //print nothing if null
+                        const name = $('<td>').text(ingredient.name);
+                        const amount = $('<td>').text(ingredient.amount != null ? ingredient.amount : '');
+                        const unit = $('<td>').text(ingredient.unit != null ? ingredient.unit : '');
 
-                //print nothing if null
-                const name = $('<td>').text(ingredient.name);
-                const amount = $('<td>').text(ingredient.amount != null ? ingredient.amount : '');
-                const unit = $('<td>').text(ingredient.unit != null ? ingredient.unit : '');
+                        row.append(name, amount, unit);
+                        table.append(row);
+                    });
 
-                row.append(name, amount, unit);
-                table.append(row);
+                    // add table to div
+                    $('.recipe-ingredients').append(table);
+
+                    const modifiedHtml = $.html();
+
+                    res.end(buildHTML.combineHTMLcustom(
+                        [buildHTML.getHead(), buildHTML.getNav(), buildHTML.getHeader("mini"),
+                            modifiedHtml, buildHTML.getFooter()]
+                    ));
+                }
             });
-
-            // add table to div
-            $('.recipe-ingredients').append(table);
-
-            const modifiedHtml = $.html();
-
-            res.end(buildHTML.combineHTMLcustom(
-                [buildHTML.getHead(), buildHTML.getNav(), buildHTML.getHeader("mini"),
-                    modifiedHtml, buildHTML.getFooter()]
-            ));
         }
-    })
+    });
 });
+
+function recursiveGetIngredients(id, ingredientsList, limit, callback) {
+    var start = ingredientsList.length * limit;
+    recipe.getIngredientsById(id, start, limit, function (err, dbResult) {
+        if (err) {
+            callback(err, null);
+        } else {
+            if (dbResult.length > 0 && dbResult[0].ingredients && dbResult[0].ingredients.length >= limit) {
+                ingredientsList = ingredientsList.concat(dbResult);
+                recursiveGetIngredients(id, ingredientsList, limit, callback);
+            } else {
+                callback(null, ingredientsList);
+            }
+        }
+    });
+}
 
 async function buildTable(html, ingredients) {
     const $ = cheerio.load(html);
