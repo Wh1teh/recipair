@@ -156,10 +156,19 @@ header {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("../img/splash_anime_food_2048x1152.jpg");
-  background-repeat: no-repeat;
+  /* background-image: url("../img/splash_anime_food_2048x1152.jpg"); */
+  background: rgb(0, 0, 0);
+  background:
+    linear-gradient(15deg, rgba(255, 255, 255, 0) 40%, rgb(255, 255, 255) 40%, rgba(255, 255, 255, 0) 100%),
+    linear-gradient(15deg, rgba(255, 0, 0, 0) 0%, rgb(255, 128, 0) 40%, rgba(255, 0, 0, 0) 40%),
+
+    linear-gradient(299deg, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 1) 40%, rgba(255, 255, 255, 0) 100%),
+    linear-gradient(299deg, rgba(255, 255, 255, 0) 0%, rgb(0, 213, 255) 40%, rgba(255, 255, 255, 0) 100%);
+
+  /* background-repeat: no-repeat;
   background-size: cover;
-  background-position-x: center;
+  background-position-x: center; */
+
   /* transform: translateZ(-1px) scale(1.1); */
   z-index: -100;
 }
@@ -878,7 +887,7 @@ footer {
   background-color: var(--first-background-light);
 
   color: var(--first-color);
-  
+
 }
 
 .recipe-ingredients {
@@ -1403,13 +1412,13 @@ footer {
 
   .recipe-image {
     width: 100%;
-    
+
   }
 
   .recipe-image img {
     position: relative;
     flex-shrink: 0;
-    
+
     width: 100%;
     height: 100dvw;
 
