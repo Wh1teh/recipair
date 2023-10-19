@@ -45,5 +45,15 @@ WHERE id = ?;
     // Execute the query
     return db.query(query, params, callback);
   },
+  getRandomRecipe: function (callback) {
+    var query = `
+    SELECT *
+    FROM recipe
+    ORDER BY RAND()
+    LIMIT 1;
+    `;
+
+    return db.query(query, callback)
+  }
 };
 module.exports = recipe;
