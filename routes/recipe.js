@@ -9,7 +9,7 @@ router.get('/', function (req, res) {
     if (req.query.param) {
         recipe.getByParameters(req.query.param)
             .then(function (dbResult) {
-                res.json(dbResult);
+                res.json(dbResult[0]);
             })
             .catch(function (err) {
                 res.status(500).json({ error: 'Internal Server Error' });
