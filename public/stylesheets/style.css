@@ -55,12 +55,14 @@ nav {
   z-index: 10000;
 
   position: sticky;
-  top: 0;
+  /* top: 0; */
+  top: calc(0.5 * var(--nav-height));
 
   display: flex;
   /* padding: 0 16px; */
 
-  height: var(--nav-height);
+  /* height: var(--nav-height); */
+  height: 0;
 
   background-color: transparent;
   justify-content: flex-end;
@@ -134,7 +136,7 @@ header {
 
   height: 100dvh;
 
-  top: calc(0dvh - var(--nav-height));
+  /* top: calc(0dvh - var(--nav-height)); */
 
   perspective: var(--global-perspective);
   perspective-origin: var(--global-perspective-origin);
@@ -858,6 +860,47 @@ footer {
   }
 }
 
+
+/*  */
+/* RECIPE */
+/*  */
+.recipe {
+  z-index: 0;
+  position: absolute;
+
+  overflow: hidden;
+
+  top: 0;
+  padding: var(--title-bg-padding);
+  width: 60%;
+  margin: auto;
+
+  background-color: var(--first-background-light);
+
+  color: var(--first-color);
+  
+}
+
+.recipe-ingredients {
+  width: 100%;
+}
+
+.recipe-ingredients table {
+  width: 100%;
+}
+
+.recipe-ingredients td {
+  padding: 8px;
+
+  border-color: var(--first-background);
+  border-width: 1px;
+  border-style: dashed;
+}
+
+.recipe-ingredients table tr:nth-child(even) {
+  background-color: var(--first-background);
+}
+
 /*  */
 /* ASPECTRATIO ASPECT RATIO DESKTOP */
 /*  */
@@ -910,46 +953,11 @@ footer {
   .footer-content {
     padding: 5px;
   }
-}
 
-/*  */
-/* RECIPE */
-/*  */
-.recipe {
-  z-index: 0;
-  position: absolute;
-
-  overflow: hidden;
-
-  top: 0;
-  padding: var(--title-bg-padding);
-  width: 60%;
-  margin: auto;
-
-  background-color: var(--first-background-light);
-
-  color: var(--first-color);
-  
-}
-
-.recipe-ingredients {
-  width: 100%;
-}
-
-.recipe-ingredients table {
-  width: 100%;
-}
-
-.recipe-ingredients td {
-  padding: 8px;
-
-  border-color: var(--first-background);
-  border-width: 1px;
-  border-style: dashed;
-}
-
-.recipe-ingredients table tr:nth-child(even) {
-  background-color: var(--first-background);
+  .recipe {
+    display: flex;
+    flex-wrap: wrap;
+  }
 }
 
 /*  */
@@ -964,6 +972,8 @@ footer {
     /* flex-direction: column;
     align-items: flex-end; */
     align-items: flex-start;
+
+    top: 0;
   }
 
   .nav-container {
@@ -1336,7 +1346,8 @@ footer {
     position: relative;
 
     margin: auto;
-    top: calc(-1 * var(--nav-height));
+    /* top: calc(-1 * var(--nav-height)); */
+    top: 0;
 
     width: 60%;
 
@@ -1364,7 +1375,7 @@ footer {
     background-color: var(--first-background-light); */
     position: relative;
 
-    top: calc(-2 * var(--title-bg-padding));
+    /* top: calc(-2 * var(--title-bg-padding)); */
     padding: 0;
     width: 100%;
     margin: auto;
