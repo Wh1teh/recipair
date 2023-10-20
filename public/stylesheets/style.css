@@ -163,7 +163,7 @@ header {
     linear-gradient(15deg, rgba(255, 0, 0, 0) 0%, rgb(255, 128, 0) 40%, rgba(255, 0, 0, 0) 40%),
 
     linear-gradient(299deg, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 1) 40%, rgba(255, 255, 255, 0) 100%),
-    linear-gradient(299deg, rgba(255, 255, 255, 0) 0%, rgb(0, 213, 255) 40%, rgba(255, 255, 255, 0) 100%);
+    linear-gradient(299deg, rgba(255, 255, 255, 0) 0%, rgb(0, 213, 255) 40%, rgba(255, 255, 255, 0) 40%);
 
   /* background-repeat: no-repeat;
   background-size: cover;
@@ -1175,9 +1175,17 @@ footer {
     padding: 8px;
 
     background: var(--first-color);
-    border-radius: 20px 5px;
+    border-radius: 5px 5px;
 
     transform: translate(200%, 0%);
+  }
+
+  nav li:first-of-type {
+    border-radius: 20px 5px 5px 5px;
+  }
+
+  nav li:last-of-type {
+    border-radius: 5px 5px 20px 5px;
   }
 
   nav li.open-nav {

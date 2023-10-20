@@ -39,7 +39,7 @@ window.addEventListener('wheel', function (e) {
         setTimeout(() => {
             footer.style.pointerEvents = 'auto';
         }, ROTATION_TRANSITION / 2);
-        
+
     } else {
         //move elements
         footer.style.transform = 'rotate3d(1, 0, 0, 180deg)';
