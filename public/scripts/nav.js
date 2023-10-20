@@ -44,3 +44,18 @@ navOpener.addEventListener("click", () => {
         });
     }
 })
+
+// Get the current base URL
+const baseUrl = window.location.href.split('#')[0];
+
+// Create the dynamic URL
+const dynamicUrl = `${baseUrl}#about`;
+
+console.log(dynamicUrl);
+// Output: "http://www.example.com/#about" (assuming the base URL is "http://www.example.com/")
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelector("#link-to-about").href = dynamicUrl;
+});
