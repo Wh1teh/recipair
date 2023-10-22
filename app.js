@@ -6,17 +6,8 @@ const dotenv=require('dotenv');
 const jwt = require('jsonwebtoken');
 const cors=require('cors');
 
-var testRouter = require('./routes/test');
-
 var indexRouter = require('./routes/index');
-var pageRouter = require('./routes/page');
-var contactRouter = require('./routes/contact');
-
-var courseRouter = require('./routes/course');
-var loginRouter = require('./routes/login');
-
 var recipeRouter = require('./routes/recipe');
-
 
 var app = express();
 dotenv.config();
@@ -29,18 +20,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //unprotected endpoints
-app.use('/test', testRouter);
-
 app.use('/', indexRouter);
-app.use('/contact', contactRouter);
-
-app.use('/login', loginRouter);
-
 app.use('/recipe', recipeRouter);
 
 app.use(authenticateToken);
-//protected endpointit
-app.use('/course', courseRouter);
+//protected endpoints
 
 
 function authenticateToken(req, res, next) {
