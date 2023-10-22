@@ -573,6 +573,8 @@ var scrollingEnabled = false;
 var SWIPE_LENIENCY = 8;
 const SWIPE_TRANSITION = 500;
 
+var isDragging = false;
+
 function disableScroll() {
     scrollingEnabled = false;
     document.body.classList.add("stop-scrolling");
