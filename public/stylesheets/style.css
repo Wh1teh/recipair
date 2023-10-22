@@ -906,6 +906,10 @@ footer {
   border-style: dashed;
 }
 
+.recipe-ingredients table tr {
+  background-color: var(--first-background-light);
+}
+
 .recipe-ingredients table tr:nth-child(even) {
   background-color: var(--first-background);
 }
@@ -966,6 +970,26 @@ footer {
   .recipe {
     display: flex;
     flex-wrap: wrap;
+  }
+
+  .recipe-ingredients {
+    --recipe-ingredients-padding: 20px;
+
+    position: fixed;
+
+    right: 5dvw;
+    top: calc(15dvh - var(--recipe-ingredients-padding));
+
+    width: 30dvw;
+    height: 70dvh;
+
+    overflow: auto;
+
+    background-color: var(--first-background-light);
+    background-color: black;
+
+    padding: var(--recipe-ingredients-padding);
+    border-radius: 20px 5px;
   }
 }
 
