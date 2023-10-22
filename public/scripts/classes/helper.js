@@ -3,6 +3,21 @@ export class Helper {
         console.log("Helper created!")
     }
 
+    createDuplicateBoxes(parent, child) {
+        // Clone the original box element
+        var duplicateBox = child.cloneNode(true);
+
+        // Add the "duplicate" class to the new box element
+        duplicateBox.classList.add('duplicate-left');
+
+        // Insert the duplicate box after the original box within the container
+        parent.insertBefore(duplicateBox, child.nextSibling);
+
+        duplicateBox = child.cloneNode(true);
+        duplicateBox.classList.add('duplicate-right');
+        parent.insertBefore(duplicateBox, child.nextSibling);
+    }
+
     putImagetoElement(toElement, title, customImgPath) {
         //base of image path   
         const path = "../img/";

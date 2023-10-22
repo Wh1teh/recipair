@@ -6,23 +6,8 @@ const titleManager = new TitleManager("RECIPAIR", 9, -2, 1.0);
 
 titleManager.generateTitle();
 
-function createDuplicateBoxes(parent, child) {
-    // Clone the original box element
-    var duplicateBox = child.cloneNode(true);
-
-    // Add the "duplicate" class to the new box element
-    duplicateBox.classList.add('duplicate-left');
-
-    // Insert the duplicate box after the original box within the container
-    parent.insertBefore(duplicateBox, child.nextSibling);
-
-    duplicateBox = child.cloneNode(true);
-    duplicateBox.classList.add('duplicate-right');
-    parent.insertBefore(duplicateBox, child.nextSibling);
-}
-
 // clone the container and box elements
-createDuplicateBoxes(
+helper.createDuplicateBoxes(
     document.querySelector('.splash-featured-container'), document.querySelector('.splash-featured'));
 
 
