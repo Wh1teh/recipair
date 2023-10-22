@@ -38,6 +38,10 @@ const renderRecipe = (res, recipeContent, ingredients) => {
     //add title
     $('.recipe-title').append(recipeContent.title);
 
+    //replace newlines
+    recipeContent.content = recipeContent.content.replace(/\n/g, "<br><br>");
+    $('.recipe-text').append(recipeContent.content);
+
     //add ingredients table
     const table = $('<table>').addClass('ingredients-table');
     ingredients.forEach((ingredient) => {
