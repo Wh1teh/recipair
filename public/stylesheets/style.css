@@ -40,6 +40,18 @@ body {
   /* sus? */
 
   overflow: visible;
+
+  background: rgb(0, 0, 0);
+  background:
+    linear-gradient(15deg, rgba(255, 255, 255, 0) 40%, rgb(255, 255, 255) 40%, rgba(255, 255, 255, 0) 100%),
+    linear-gradient(15deg, rgba(255, 0, 0, 0) 0%, rgb(255, 128, 0) 40%, rgba(255, 0, 0, 0) 40%),
+
+    linear-gradient(299deg, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 1) 40%, rgba(255, 255, 255, 0) 100%),
+    linear-gradient(299deg, rgba(255, 255, 255, 0) 0%, rgb(0, 213, 255) 40%, rgba(255, 255, 255, 0) 40%);
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .stop-scrolling {
@@ -157,13 +169,13 @@ header {
   width: 100%;
   height: 100%;
   /* background-image: url("../img/splash_anime_food_2048x1152.jpg"); */
-  background: rgb(0, 0, 0);
+  /* background: rgb(0, 0, 0);
   background:
     linear-gradient(15deg, rgba(255, 255, 255, 0) 40%, rgb(255, 255, 255) 40%, rgba(255, 255, 255, 0) 100%),
     linear-gradient(15deg, rgba(255, 0, 0, 0) 0%, rgb(255, 128, 0) 40%, rgba(255, 0, 0, 0) 40%),
 
     linear-gradient(299deg, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 1) 40%, rgba(255, 255, 255, 0) 100%),
-    linear-gradient(299deg, rgba(255, 255, 255, 0) 0%, rgb(0, 213, 255) 40%, rgba(255, 255, 255, 0) 40%);
+    linear-gradient(299deg, rgba(255, 255, 255, 0) 0%, rgb(0, 213, 255) 40%, rgba(255, 255, 255, 0) 40%); */
 
   /* background-repeat: no-repeat;
   background-size: cover;
