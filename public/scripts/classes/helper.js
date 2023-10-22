@@ -68,8 +68,8 @@ export class Helper {
     }
 
     //for mobile debug reasons print to search bar
-    debugPrintToSearch(whatToPrint) {
-        document.getElementById("splash-search").setAttribute("placeholder", whatToPrint);
+    debugPrintToSearch(whatToPrint, whereToPrint) {
+        whereToPrint.setAttribute("placeholder", whatToPrint);
     }
 
 }

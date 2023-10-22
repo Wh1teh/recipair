@@ -1,3 +1,5 @@
+import { Helper } from "./classes/helper.js"
+const helper = new Helper();
 
 //splash title generation
 var title = "RECIPAIR";
@@ -163,36 +165,11 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => {
             // Handle error 
             console.error(error);
-            handleResponseJson(getErrorObject());
+            handleResponseJson(helper.getErrorObject());
             putDataToFeatured();
             finishFeaturedTransition(animationTimer);
         });
 });
-
-function getErrorObject() {
-    const errorObject = [
-        {
-            content:
-                "Something went wrong..."
-            , date:
-                null
-            , edit_date:
-                null
-            , edited:
-                null
-            , id:
-                null
-            , rating:
-                null
-            , title:
-                "Network Error"
-            , writer_id:
-                null
-        }
-    ]
-
-    return JSON.stringify(errorObject);
-}
 
 var recipeList = [];
 var RECIPE_INDEX = 0;
@@ -205,7 +182,7 @@ function handleResponseJson(serverResponse, animationTimer) {
     }
 
     //replace global list with sorted json
-    recipeList = zigzagSort(jsonTable);
+    recipeList = helper.zigzagSort(jsonTable);
 
     // putDataToFeatured(animationTimer);
 }
@@ -238,25 +215,6 @@ function putDataToFeatured() {
     console.log("final list: ", recipeList);
 
     // finishFeaturedTransition(animationTimer);
-}
-
-function zigzagSort(objects) {
-    // Sort the objects by the "rating" key in descending order
-    objects.sort((a, b) => b.rating - a.rating);
-
-    const result = [];
-
-    //add to end and front alternatingly from the top, resulting in lowest values being at the edges
-    for (let index = 0; index < objects.length; index++) {
-        const element = objects[index];
-        if (index % 2 == 0) {
-            result.push(element);
-        } else {
-            result.unshift(element);
-        }
-    }
-
-    return result;
 }
 
 const TRANSITION_LEN = 1000;
@@ -331,7 +289,8 @@ function printToFeatured(jsonObj, featuredBox) {
     featuredBox.querySelector(".featured-text p").innerHTML = jsonObj.content;
     featuredBox.querySelector(".featured-text a").href = pathToRecipe;
 
-    putImagetoElement(featuredBox);
+    var imageElement = featuredBox.querySelector(".featured-img img");
+    helper.putImagetoElement(imageElement, title.innerHTML);
     featuredBox.querySelector("img").parentNode.href = pathToRecipe;
 
     featuredBox.querySelector(".star-rating").setAttribute("data-content", jsonObj.rating);
@@ -350,7 +309,7 @@ function reduceFontIfWrapped(textElement, baseValue, unit) {
     textElement.style.textWrap = "nowrap";
     textElement.style.fontSize = baseValue + unit;
 
-    if (!isTextOverflowingHorizontally(textElement)) {
+    if (!helper.isTextOverflowingHorizontally(textElement)) {
         textElement.style.textWrap = "balance";
         return;
     }
@@ -358,7 +317,7 @@ function reduceFontIfWrapped(textElement, baseValue, unit) {
     textElement.style.textWrap = "balance";
 
     var counter = 0;
-    while (isTextOverflowingVertically(textElement)) {
+    while (helper.isTextOverflowingVertically(textElement)) {
         counter++;
         baseValue /= 1.1;
         textElement.style.fontSize = baseValue + unit;
@@ -380,20 +339,6 @@ function updateRatings(featuredBox, forceRating = -1) {
 
     stars.style.backgroundImage = 'linear-gradient(90deg, var(--second-color) '
         + rating / MAX_RATING * 100 + '%, var(--first-background-light) 0%)';
-}
-
-function putImagetoElement(featuredBox) {
-    const title = featuredBox.querySelector(".featured-title h3").innerHTML
-
-    //TODO? maybe these shouldn't be this hardcoded idk
-    const path = "../img/";
-    const prefix = "featured_sample_";
-
-    // parse/title_into_this_form.jpg
-    const imgPath = path + prefix + title.split(" ").join("_").toLowerCase() + ".jpg";
-
-    const imgElement = featuredBox.querySelector(".featured-img img")
-    imgElement.setAttribute("src", imgPath);
 }
 
 function updateFeaturedNav(featuredBox) {
@@ -482,23 +427,6 @@ function isJson(jsonString) {
         return false;
     }
 }
-
-function isTextOverflowingHorizontally(element) {
-    console.log(element.offsetWidth, " > ", element.parentNode.offsetWidth)
-    return element.offsetWidth > element.parentNode.offsetWidth;
-}
-
-function isTextOverflowingVertically(element) {
-    console.log(element.offsetHeight, " > ", element.parentNode.offsetHeight)
-    return element.offsetHeight > element.parentNode.offsetHeight;
-}
-
-
-//for mobile debug reasons print to search bar
-function debugPrintToSearch(whatToPrint) {
-    document.getElementById("splash-search").setAttribute("placeholder", whatToPrint);
-}
-
 
 //mobile stuff below
 
