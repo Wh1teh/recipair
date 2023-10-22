@@ -1,52 +1,10 @@
 import { Helper } from "./classes/helper.js"
 const helper = new Helper();
 
-//splash title generation
-var title = "RECIPAIR";
-const DUPE_AMOUNT = 9;
-const TITLE_OFFSET = -2;
-var TITLE_OFFSET_MULTIPLIER = 1.0
+import { TitleManager } from "./classes/title_manager.js"
+const titleManager = new TitleManager("RECIPAIR", 9, -2, 1.0);
 
-for (let index = 0; index < DUPE_AMOUNT; index++) {
-    const titleElement = document.createElement('h1');
-
-    // Set content and attributes of the element
-    titleElement.textContent = title;
-    titleElement.setAttribute('class', 'splash-title');
-    titleElement.setAttribute('data-content', title)
-    titleElement.style.zIndex = index;
-    titleElement.style.opacity = (index + 1) / DUPE_AMOUNT;
-
-    //is last element
-    if (index + 1 == DUPE_AMOUNT) {
-        titleElement.style.color = "transparent";
-        titleElement.style.opacity = "1";
-        titleElement.style.textShadow = "none";
-    } else {
-        titleElement.style.marginTop = ((DUPE_AMOUNT - index - 1) * TITLE_OFFSET) + 'dvw';
-        titleElement.style.webkitTextStrokeColor = "transparent";
-    }
-
-    const INTERVAL = 800;
-    const INTERVAL_PHASE = DUPE_AMOUNT; //if this is 2, you're gonna see 2 trails at a time
-    setTimeout(() => {
-        setTimeout(() => {
-            //is last element
-            if (index + 1 == DUPE_AMOUNT) {
-                titleElement.style.color = "var(--first-color)";
-                titleElement.style.opacity = "1";
-            } else {
-                titleElement.style.webkitTextStrokeColor = "var(--first-color)";
-                titleElement.style.color = "transparent";
-            }
-        }, INTERVAL);
-
-        titleElement.style.color = "var(--first-color)";
-    }, INTERVAL * (index + 1) / INTERVAL_PHASE);
-
-    // Write element to document
-    document.querySelector('.splash-title-container').appendChild(titleElement);
-}
+titleManager.generateTitle();
 
 function createDuplicateBoxes(parent, child) {
     // Clone the original box element
@@ -435,37 +393,6 @@ if ('virtualKeyboard' in navigator) {
     navigator.virtualKeyboard.overlaysContent = true;
 }
 
-// Function to change h1 margin-top
-function changeTitleMarginTop(aspectQueryList) {
-    //find first aspect ratio that matches
-    switch (aspectQueryList.findIndex((item) => item.matches === true)) {
-        case 0:
-            console.log("detected <2/3 aspect ratio");
-            TITLE_OFFSET_MULTIPLIER = 1.5;
-            break;
-
-        case 1:
-            console.log("detected <6/5 aspect ratio");
-            TITLE_OFFSET_MULTIPLIER = 1.5;
-            break;
-
-        default:
-            console.log("default? aspect ratio");
-            TITLE_OFFSET_MULTIPLIER = 1.0
-            break;
-    }
-
-    const titleElements = document.querySelectorAll('.splash-content h1');
-
-    for (let index = 0; index < DUPE_AMOUNT; index++) {
-        if (index + 1 != DUPE_AMOUNT) {
-            //don't apply to last title (this is gonna be the main one)
-            titleElements[index].style.marginTop =
-                ((DUPE_AMOUNT - index - 1) * (TITLE_OFFSET * TITLE_OFFSET_MULTIPLIER)) + 'dvw';
-        }
-    }
-}
-
 // Detect changes in aspect ratio
 const aspectRatios = ['2/3', '6/5', '1000/1'];
 var aspectQueryList = [];
@@ -476,12 +403,12 @@ for (let i = 0; i < aspectRatios.length; i++) {
 
     // Add event listener for changes in aspect ratio
     aspectQuery.addEventListener("change", function () {
-        changeTitleMarginTop(aspectQueryList);
+        titleManager.changeTitleMarginTop(aspectQueryList);
     });
 }
 
 // Initial check
-changeTitleMarginTop(aspectQueryList);
+titleManager.changeTitleMarginTop(aspectQueryList);
 
 
 //swiping for featured
