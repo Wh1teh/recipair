@@ -989,7 +989,7 @@ footer {
     display: flex;
     flex-wrap: wrap;
 
-    top: 17dvh;
+    top: 9dvw;
 
     width: calc(40% - var(--title-bg-padding));
     margin-left: calc(10% - var(--title-bg-padding));
