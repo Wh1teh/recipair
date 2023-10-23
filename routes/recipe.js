@@ -74,7 +74,7 @@ router.get('/:id', (req, res) => {
     var recipeContent;
 
     //get random recipe if id is x
-    if (req.params.id === "x") {
+    if (req.params.id === "x" || req.params.id === "null") {
         //get general info
         recipe.getRandomRecipe()
             .then((dbResult) => {
